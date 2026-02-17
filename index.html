@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Den Forsvundne Matematikers Bog</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #f0e6d2;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            border: 2px solid #d4af37;
+        }
+        
+        h1 {
+            font-family: 'MedievalSharp', serif;
+            font-size: 2.5em;
+            color: #d4af37;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite;
+        }
+        
+        @keyframes glow {
+            0%, 100% { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 10px #d4af37; }
+            50% { text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8), 0 0 20px #d4af37, 0 0 30px #d4af37; }
+        }
+        
+        .subtitle {
+            font-style: italic;
+            color: #c0c0c0;
+            font-size: 1.1em;
+        }
+        
+        .progress-bar {
+            background: rgba(0, 0, 0, 0.5);
+            height: 30px;
+            border-radius: 15px;
+            margin: 20px 0;
+            overflow: hidden;
+            border: 2px solid #d4af37;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #d4af37 0%, #ffd700 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 2px solid #d4af37;
+            margin: 5px;
+            min-width: 150px;
+            text-align: center;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: #c0c0c0;
+        }
+        
+        .stat-value {
+            font-size: 1.5em;
+            color: #d4af37;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .game-area {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-area::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .room-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .room-image {
+            width: 100%;
+            max-width: 500px;
+            height: 300px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            border: 3px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            object-fit: cover;
+        }
+        
+        .story-text {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin: 20px 0;
+            text-align: justify;
+            color: #f0e6d2;
+        }
+        
+        .math-problem {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .math-problem h3 {
+            color: #d4af37;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .input-group {
+            margin: 20px 0;
+        }
+        
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.1em;
+            border: 2px solid #d4af37;
+            background: rgba(0, 0, 0, 0.6);
+            color: #f0e6d2;
+            border-radius: 8px;
+            font-family: 'Cinzel', serif;
+            margin: 10px 0;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+        }
+        
+        button {
+            background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+            color: #1a1a2e;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .hint-button {
+            background: linear-gradient(135deg, #4a90e2 0%, #5ca3ff 100%);
+            color: white;
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .feedback.success {
+            background: rgba(46, 125, 50, 0.3);
+            border: 2px solid #4caf50;
+            color: #4caf50;
+        }
+        
+        .feedback.error {
+            background: rgba(198, 40, 40, 0.3);
+            border: 2px solid #f44336;
+            color: #ff6b6b;
+        }
+        
+        .feedback.hint {
+            background: rgba(74, 144, 226, 0.3);
+            border: 2px solid #4a90e2;
+            color: #5ca3ff;
+        }
+        
+        .door-opening {
+            font-size: 3em;
+            text-align: center;
+            animation: doorOpen 2s ease;
+        }
+        
+        @keyframes doorOpen {
+            0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0); opacity: 1; }
+        }
+        
+        .particle {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #d4af37;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 3s ease-out forwards;
+        }
+        
+        @keyframes float {
+            to {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .start-screen, .difficulty-screen, .victory-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .start-screen h2, .difficulty-screen h2, .victory-screen h2 {
+            color: #d4af37;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .start-screen p, .difficulty-screen p {
+            font-size: 1.2em;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .difficulty-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .difficulty-btn {
+            padding: 20px 40px;
+            font-size: 1.2em;
+            min-width: 150px;
+        }
+        
+        .victory-stats {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #d4af37;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+        
+        .victory-stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .victory-stat:last-child {
+            border-bottom: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                width: 100%;
+            }
+            
+            .difficulty-buttons {
+                flex-direction: column;
+            }
+            
+            .difficulty-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏰 Den Forsvundne Matematikers Bog 🏰</h1>
+            <p class="subtitle">Et Middelalderligt Matematisk Eventyr</p>
+        </header>
+
+        <div class="stats hidden" id="stats">
+            <div class="stat-item">
+                <div class="stat-label">Rum Gennemført</div>
+                <div class="stat-value" id="roomsCompleted">0/5</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Hints Brugt</div>
+                <div class="stat-value" id="hintsUsed">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Score</div>
+                <div class="stat-value" id="score">0</div>
+            </div>
+        </div>
+
+        <div class="progress-bar hidden" id="progressBar">
+            <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+
+        <div class="game-area">
+            <div id="gameContent">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentRoom: 0,
+            difficulty: null,
+            hintsUsed: 0,
+            score: 0,
+            totalRooms: 15,
+            startTime: null,
+            roomStartTime: null,
+            hintPenalty: 10,
+            usedProblems: []
+        };
+
+        // Sound effects using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            switch(type) {
+                case 'success':
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.5);
+                    break;
+                case 'error':
+                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    break;
+                case 'door':
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 1);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 1);
+                    break;
+                case 'hint':
+                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+            }
+        }
+
+        function createParticles(x, y) {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = x + 'px';
+                    particle.style.top = y + 'px';
+                    particle.style.animationDelay = (Math.random() * 0.5) + 's';
+                    document.body.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 3000);
+                }, i * 50);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('roomsCompleted').textContent = 
+                `${gameState.currentRoom}/${gameState.totalRooms}`;
+            document.getElementById('hintsUsed').textContent = gameState.hintsUsed;
+            document.getElementById('score').textContent = gameState.score;
+            
+            const progress = (gameState.currentRoom / gameState.totalRooms) * 100;
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = progress + '%';
+            progressFill.textContent = Math.round(progress) + '%';
+        }
+
+        function showFeedback(message, type = 'success') {
+            const feedback = document.createElement('div');
+            feedback.className = `feedback ${type}`;
+            feedback.textContent = message;
+            
+            const gameContent = document.getElementById('gameContent');
+            gameContent.insertBefore(feedback, gameContent.firstChild);
+            
+            setTimeout(() => feedback.remove(), 5000);
+        }
+
+        // Room definitions with multiple variations - 15 rooms total
+        const rooms = [
+            {
+                title: "Bibliotekets Hemmelige Dør",
+                story: "Du står i det støvede bibliotek på Gladsaxe Slot. Månelyset falder ind gennem de farvede glasvinduer. På væggen finder du en inskription:\n\n\"Den vise matematiker gemte sin bog bag en dør, der kun åbnes af dem som forstår talenes sprog. Løs ligningen, og døren skal åbne sig.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%232c1810' width='500' height='300'/%3E%3Crect fill='%231a0f08' x='180' y='80' width='140' height='180' rx='10'/%3E%3Ccircle fill='%23d4af37' cx='250' cy='170' r='8'/%3E%3Cpath fill='%233d2817' d='M50 50 L100 20 L450 20 L400 50 Z'/%3E%3Crect fill='%234a3426' x='80' y='100' width='60' height='80'/%3E%3Crect fill='%234a3426' x='360' y='100' width='60' height='80'/%3E%3Ctext x='250' y='250' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E📚 Biblioteket 📚%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Løs ligningen: 3x - 1 = 5", answer: 2, hint: "Læg 1 til på begge sider først, derefter divider med 3" },
+                        { question: "Løs ligningen: 2x + 4 = 12", answer: 4, hint: "Træk 4 fra begge sider, derefter divider med 2" },
+                        { question: "Løs ligningen: 5x - 10 = 0", answer: 2, hint: "Læg 10 til på begge sider, derefter divider med 5" },
+                        { question: "Løs ligningen: 4x + 3 = 19", answer: 4, hint: "Træk 3 fra begge sider først" },
+                        { question: "Løs ligningen: 6x - 18 = 0", answer: 3, hint: "Læg 18 til begge sider, divider med 6" }
+                    ],
+                    medium: [
+                        { question: "Løs ligningen: 2x + 3 = 5x - 9", answer: 4, hint: "Samle alle x-led på venstre side og alle tal på højre side" },
+                        { question: "Løs ligningen: 4x - 7 = 2x + 1", answer: 4, hint: "Træk 2x fra begge sider og læg 7 til på begge sider" },
+                        { question: "Løs ligningen: 3(x + 2) = 15", answer: 3, hint: "Udvid parentesen først eller divider begge sider med 3" },
+                        { question: "Løs ligningen: 5x - 8 = 3x + 4", answer: 6, hint: "Flyt alle x til venstre og tal til højre" },
+                        { question: "Løs ligningen: 2(x - 1) = 10", answer: 6, hint: "Divider med 2 eller udvid parentesen" }
+                    ],
+                    hard: [
+                        { question: "Løs ligningen: (2x + 1)/3 = 5", answer: 7, hint: "Gang begge sider med 3 først" },
+                        { question: "Løs ligningen: 2(x - 3) + 4 = 3x - 1", answer: -3, hint: "Udvid parentesen og samle led" },
+                        { question: "Løs ligningen: x² - 9 = 0. Angiv den positive løsning.", answer: 3, hint: "Dette er en andengradsligning. Brug kvadratrod på begge sider" },
+                        { question: "Løs ligningen: (3x - 2)/4 = 2", answer: 10/3, hint: "Gang med 4 først, så løs for x. Svar: 3.33" },
+                        { question: "Løs ligningen: 4(x + 1) - 2 = 3(x - 1) + 9", answer: 4, hint: "Udvid begge parenteser og samle led" }
+                    ]
+                }
+            },
+            {
+                title: "Spiraltrappens Mysterium",
+                story: "Du træder ind i et cirkelrundt tårn. En spiraltrappe snor sig opad i mørket. På det første trin ligger en pergamentrulle:\n\n\"Matematikeren gik op ad disse trin hver dag. Hans højde og antallet af trin har en lineær sammenhæng. Bestem hældningskoefficienten for at finde den næste ledtråd.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cellipse fill='%233d3d5c' cx='250' cy='250' rx='150' ry='50'/%3E%3Cpath fill='%234a4a6a' d='M100 250 Q250 180 400 250 Q250 200 100 250' /%3E%3Cpath fill='%235a5a7a' d='M120 230 Q250 160 380 230 Q250 180 120 230' /%3E%3Cpath fill='%236a6a8a' d='M140 210 Q250 140 360 210 Q250 160 140 210' /%3E%3Cpath fill='%237a7a9a' d='M160 190 Q250 120 340 190 Q250 140 160 190' /%3E%3Ctext x='250' y='50' font-family='serif' font-size='24' fill='%23d4af37' text-anchor='middle'%3E🗼 Spiraltrappen 🗼%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En lineær funktion går gennem punkterne (0, 2) og (1, 5). Hvad er hældningskoefficienten a?", answer: 3, hint: "Hældningen er ændringen i y divideret med ændringen i x: (5-2)/(1-0)" },
+                        { question: "Grafen for f(x) = ax + b går gennem (0, 1) og (2, 7). Bestem a.", answer: 3, hint: "Brug formlen a = (y₂ - y₁)/(x₂ - x₁)" },
+                        { question: "For funktionen f(x) = ax + 3, ved vi at f(2) = 9. Hvad er a?", answer: 3, hint: "Indsæt x=2 og f(2)=9 i ligningen og løs for a" },
+                        { question: "En linje går gennem (0, 5) og (1, 8). Hvad er hældningen?", answer: 3, hint: "Ændring i y divideret med ændring i x" },
+                        { question: "For f(x) = ax + 1, hvis f(3) = 13, hvad er a?", answer: 4, hint: "Sæt x=3 og f(3)=13 ind i ligningen" }
+                    ],
+                    medium: [
+                        { question: "En linje går gennem punkterne (1, 3) og (4, 12). Hvad er hældningskoefficienten?", answer: 3, hint: "Brug to-punktsformlen: a = (y₂ - y₁)/(x₂ - x₁)" },
+                        { question: "For f(x) = ax + b ved vi: f(2) = 7 og f(5) = 13. Bestem a.", answer: 2, hint: "Brug to punkter (2,7) og (5,13) i to-punktsformlen" },
+                        { question: "Linjen gennem (-2, 1) og (3, 11) har hældning a. Bestem a.", answer: 2, hint: "a = (11-1)/(3-(-2))" },
+                        { question: "En funktion f(x) = ax + 2 går gennem (4, 14). Hvad er a?", answer: 3, hint: "Sæt punktet ind: 14 = a·4 + 2" },
+                        { question: "Bestem hældningen for linjen gennem (2, 5) og (6, 17)", answer: 3, hint: "a = (17-5)/(6-2)" }
+                    ],
+                    hard: [
+                        { question: "En lineær model er givet ved punkterne (3, 14) og (7, 26). Hvad er hældningen?", answer: 3, hint: "Hældning = (26-14)/(7-3)" },
+                        { question: "Hvis f(x) = ax + b, og vi kender f(1) = 5 og f(4) = 17, hvad er da 2a? (a ganget med 2)", answer: 8, hint: "Find først a med (17-5)/(4-1), gang derefter med 2" },
+                        { question: "En linje skærer y-aksen i 3 og har hældning 2. Hvad er x-værdien når y = 11?", answer: 4, hint: "Funktionen er f(x) = 2x + 3. Løs 2x + 3 = 11" },
+                        { question: "For punkterne (2, 9) og (5, 18), bestem 3a (hældning ganget 3)", answer: 9, hint: "Find a først: (18-9)/(5-2), gang med 3" },
+                        { question: "Linjen f(x) = ax - 1 går gennem (3, 8). Ved hvilken x er f(x) = 14?", answer: 5, hint: "Find først a ved at sætte (3,8) ind. Derefter løs f(x)=14" }
+                    ]
+                }
+            },
+            {
+                title: "Den Hemmelige Have",
+                story: "Gennem en tung egetræsdør træder du ud i en månebelyste have. Rosenbede danner geometriske mønstre. I havens midte står en fontæne med denne inskription:\n\n\"Matematikeren plantede sine roser i mønstre baseret på Pythagoras' visdom. Mål siderne i trekanten af rosenbede for at finde næste nøgle.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%230a2e0a' width='500' height='300'/%3E%3Cellipse fill='%23164016' cx='250' cy='260' rx='200' ry='40'/%3E%3Crect fill='%236b4423' x='230' y='100' width='40' height='160'/%3E%3Ccircle fill='%23ff6b9d' cx='210' cy='80' r='15'/%3E%3Ccircle fill='%23ff6b9d' cx='250' cy='70' r='18'/%3E%3Ccircle fill='%23ff6b9d' cx='290' cy='80' r='15'/%3E%3Cpath fill='%234a90e2' d='M200 250 L250 150 L300 250 Z' opacity='0.3'/%3E%3Ccircle fill='%234a90e2' cx='250' cy='250' r='30' opacity='0.5'/%3E%3Ctext x='250' y='40' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E🌹 Den Hemmelige Have 🌹%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En retvinklet trekant har kateter på 3 og 4. Hvad er hypotenusen?", answer: 5, hint: "c² = a² + b², så c² = 3² + 4² = 9 + 16" },
+                        { question: "En trekant har kateter 6 og 8. Bestem hypotenusen.", answer: 10, hint: "c² = 6² + 8² = 36 + 64 = 100" },
+                        { question: "Hvis a = 5 og b = 12 i en retvinklet trekant, hvad er c?", answer: 13, hint: "c² = 25 + 144" },
+                        { question: "Kateter: 8 og 15. Hvad er hypotenusen?", answer: 17, hint: "c² = 64 + 225" },
+                        { question: "I en 3-4-5 trekant, hvis den mindste katete er 6, hvad er hypotenusen?", answer: 10, hint: "Skaler op med 2: 6-8-10" }
+                    ],
+                    medium: [
+                        { question: "En retvinklet trekant har hypotenusen 10 og den ene katete er 6. Hvad er den anden katete?", answer: 8, hint: "a² + 6² = 10², så a² = 100 - 36" },
+                        { question: "En stige på 5 meter står 3 meter fra en væg. Hvor højt når stigen op?", answer: 4, hint: "Brug Pythagoras: h² + 3² = 5²" },
+                        { question: "I en retvinklet trekant er hypotenusen 13 og en katete er 5. Find den anden katete.", answer: 12, hint: "5² + b² = 13², så b² = 169 - 25" },
+                        { question: "Hypotenusen er 15, en katete er 9. Find den anden katete.", answer: 12, hint: "9² + b² = 15²" },
+                        { question: "En trekant med hypotenusen 25 og katete 7. Hvad er den anden katete?", answer: 24, hint: "7² + b² = 25²" }
+                    ],
+                    hard: [
+                        { question: "En retvinklet trekant har areal 24 og den ene katete er 6. Hvad er hypotenusen?", answer: 10, hint: "Areal = (a·b)/2, så 24 = (6·b)/2. Find b først, derefter brug Pythagoras" },
+                        { question: "Diagonalen i et rektangel er 13, og den ene side er 5. Hvad er omkredsen af rektanglet?", answer: 34, hint: "Find den anden side med Pythagoras først (=12), omkreds = 2·(5+12)" },
+                        { question: "En kvadrat har diagonal 10. Hvad er siden? (afrund til hel tal)", answer: 7, hint: "I et kvadrat: d² = s² + s² = 2s²" },
+                        { question: "Trekant areal 30, katete 5. Hvad er hypotenusen?", answer: 13, hint: "Find anden katete fra areal først: 30=(5·b)/2" },
+                        { question: "Rektangel: diagonal 20, side 12. Hvad er omkredsen?", answer: 56, hint: "Find anden side: 12²+b²=20², derefter omkreds" }
+                    ]
+                }
+            },
+            {
+                title: "Vagttårnets Udfordring",
+                story: "Du klatrer op i det gamle vagttårn. Gennem de smalle vinduer kan du se ud over landskabet. På væggen er ridset:\n\n\"Vægteren tæller sine skridt mellem tårnene. Funktionernes sammenhæng åbenbarer vejen videre.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23162447' width='500' height='300'/%3E%3Crect fill='%234a4a4a' x='200' y='100' width='100' height='180'/%3E%3Crect fill='%23333' x='220' y='80' width='60' height='30'/%3E%3Crect fill='%235a5a5a' x='190' y='70' width='120' height='15'/%3E%3Crect fill='%23666' x='230' y='120' width='40' height='40'/%3E%3Crect fill='%23666' x='230' y='180' width='40' height='40'/%3E%3Ccircle fill='%23ffeb3b' cx='80' cy='80' r='30' opacity='0.7'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E🏰 Vagttårnet 🏰%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "For funktionen f(x) = 2x + 3, hvad er f(5)?", answer: 13, hint: "Sæt x=5 ind: f(5) = 2·5 + 3" },
+                        { question: "Hvis g(x) = 3x - 1, hvad er g(4)?", answer: 11, hint: "g(4) = 3·4 - 1" },
+                        { question: "For h(x) = -x + 7, bestem h(3)", answer: 4, hint: "h(3) = -3 + 7" },
+                        { question: "Funktion f(x) = 4x + 2. Hvad er f(3)?", answer: 14, hint: "Sæt 3 ind for x" },
+                        { question: "For p(x) = 5x, hvad er p(6)?", answer: 30, hint: "p(6) = 5·6" }
+                    ],
+                    medium: [
+                        { question: "For f(x) = 2x + 1, ved hvilken x er f(x) = 17?", answer: 8, hint: "Løs ligningen: 2x + 1 = 17" },
+                        { question: "Hvis g(x) = 3x - 5, ved hvilken x er g(x) = 10?", answer: 5, hint: "Løs: 3x - 5 = 10" },
+                        { question: "Funktion h(x) = -2x + 10. Hvad er x når h(x) = 4?", answer: 3, hint: "Løs: -2x + 10 = 4" },
+                        { question: "For f(x) = 4x - 3, find x når f(x) = 21", answer: 6, hint: "Løs ligningen 4x - 3 = 21" },
+                        { question: "Hvis m(x) = 5x + 2, ved hvilken x er m(x) = 32?", answer: 6, hint: "Løs: 5x + 2 = 32" }
+                    ],
+                    hard: [
+                        { question: "To funktioner: f(x) = 2x + 1 og g(x) = -x + 7. Ved hvilken x er f(x) = g(x)?", answer: 2, hint: "Sæt dem lig hinanden: 2x + 1 = -x + 7" },
+                        { question: "f(x) = 3x - 2 og g(x) = x + 6. Find x hvor f(x) = g(x)", answer: 4, hint: "Løs: 3x - 2 = x + 6" },
+                        { question: "For f(x) = ax + 3 ved vi f(2) = 11. Hvad er f(5)?", answer: 23, hint: "Find først a: 11 = 2a + 3, så a=4. Derefter f(5) = 4·5 + 3" },
+                        { question: "f(x) = 2x + b og f(3) = 13. Hvad er f(6)?", answer: 19, hint: "Find b først: 13 = 6 + b, så b=7" },
+                        { question: "Linjerne y = 2x - 1 og y = -x + 8 skærer hinanden. Hvad er x-værdien?", answer: 3, hint: "Løs: 2x - 1 = -x + 8" }
+                    ]
+                }
+            },
+            {
+                title: "Alkymistens Værksted",
+                story: "Du finder en skjult kælder fyldt med flasker og urtepotter. Dampe stiger fra en kedel. En gammel bog ligger åben:\n\n\"Mine eliksirer kræver præcise forhold mellem ingredienser. Kvadratsætningerne afslører de rette mængder.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23120b0a' width='500' height='300'/%3E%3Crect fill='%233d2817' x='100' y='200' width='300' height='20'/%3E%3Cpath fill='%236b4423' d='M200 200 L220 120 L280 120 L300 200 Z'/%3E%3Cellipse fill='%2366ff66' cx='250' cy='120' rx='30' ry='10' opacity='0.6'/%3E%3Ccircle fill='%23ff6b6b' cx='150' cy='180' r='12'/%3E%3Ccircle fill='%2366ccff' cx='350' cy='170' r='15'/%3E%3Ccircle fill='%23ffeb3b' cx='400' cy='190' r='10'/%3E%3Cpath fill='%23888' d='M240 190 Q250 180 260 190' stroke='%23666' stroke-width='2' fill='none'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E⚗️ Alkymistens Værksted ⚗️%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Reducer: (x + 3)² = x² + ? + 9. Hvad er det manglende led?", answer: 6, hint: "(a+b)² = a² + 2ab + b², så 2·1·3 = 6" },
+                        { question: "Hvad er (x + 5)² udvidet? Angiv koefficienten til x (tallet foran x)", answer: 10, hint: "(x+5)² = x² + 10x + 25" },
+                        { question: "(x - 4)² = x² - ? + 16. Hvad mangler?", answer: 8, hint: "(a-b)² = a² - 2ab + b²" },
+                        { question: "Reducer (x + 2)(x - 2). Hvad er konstantleddet?", answer: -4, hint: "(a+b)(a-b) = a² - b²" },
+                        { question: "Hvad er x² + 8x + 16 faktoriseret? Angiv tallet b hvis svaret er (x+b)²", answer: 4, hint: "Dette er et kvadrat: (x+4)²" }
+                    ],
+                    medium: [
+                        { question: "Reducer: (2x + 3)². Hvad er koefficienten til x?", answer: 12, hint: "(2x+3)² = 4x² + 12x + 9" },
+                        { question: "x² - 10x + 25 kan skrives som (x - a)². Hvad er a?", answer: 5, hint: "Genkendt kvadratsætning: (x-5)²" },
+                        { question: "(x + 3)(x - 3) = x² - ?. Hvad er ?", answer: 9, hint: "Differens mellem to kvadrater: 3² = 9" },
+                        { question: "Reducer (3x + 1)². Hvad er konstantleddet?", answer: 1, hint: "(3x+1)² = 9x² + 6x + 1" },
+                        { question: "4x² + 12x + 9 = (ax + b)². Hvad er a + b?", answer: 5, hint: "(2x+3)², så a=2, b=3" }
+                    ],
+                    hard: [
+                        { question: "Hvis (x + a)² = x² + 14x + 49, hvad er a?", answer: 7, hint: "Fra 2ax = 14x får vi a = 7" },
+                        { question: "(x + 2)² - (x - 2)² = ?. Hvad er resultatet når det er reduceret? Angiv koefficienten til x", answer: 8, hint: "Brug kvadratsætninger: x²+4x+4-(x²-4x+4) = 8x" },
+                        { question: "Løs ved kvadratsætning: x² + 6x + 9 = 25. Angiv den positive løsning.", answer: 2, hint: "(x+3)² = 25, så x+3 = ±5" },
+                        { question: "x² - 2ax + 16 er et kvadrat. Hvad er a? (positiv værdi)", answer: 4, hint: "For at få kvadrat skal 2a·4 = 8a give 16 som midterled" },
+                        { question: "(2x - 3)² = 4x² - 12x + ?. Hvad er ?", answer: 9, hint: "Sidste led er b² = 3² = 9" }
+                    ]
+                }
+            },
+            {
+                title: "Spejlsalen",
+                story: "Du træder ind i en sal hvor spejle dækker alle vægge. Lyset reflekteres i uendelighed. På gulvet står skrevet:\n\n\"Se din egen spejling - funktioner kan vise symmetri og balance. Find ligevægtspunktet.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23000' width='500' height='300'/%3E%3Crect fill='%23333' x='50' y='50' width='180' height='220' rx='10' stroke='%23d4af37' stroke-width='3'/%3E%3Crect fill='%23333' x='270' y='50' width='180' height='220' rx='10' stroke='%23d4af37' stroke-width='3'/%3E%3Ccircle fill='%23d4af37' cx='250' cy='160' r='30' opacity='0.3'/%3E%3Cellipse fill='%23666' cx='250' cy='270' rx='150' ry='20'/%3E%3Ctext x='250' y='40' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E🪞 Spejlsalen 🪞%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En funktion f(x) = ax + b går gennem (0, 5). Hvad er b?", answer: 5, hint: "b er skæringen med y-aksen, altså y-værdien når x=0" },
+                        { question: "Linjen y = 3x + b går gennem (0, -2). Hvad er b?", answer: -2, hint: "Sæt punktet ind: -2 = 3·0 + b" },
+                        { question: "For f(x) = 4x + b, hvis f(0) = 7, hvad er b?", answer: 7, hint: "f(0) = b" },
+                        { question: "En linje skærer y-aksen i punktet (0, 8). Hvad er b i y = ax + b?", answer: 8, hint: "b er y-aksen skæring" },
+                        { question: "f(x) = 2x + b og f(0) = -3. Bestem b.", answer: -3, hint: "Når x=0 er f(0) = b" }
+                    ],
+                    medium: [
+                        { question: "En funktion går gennem (2, 10) og (2, 14). Er dette en funktion? Svar 0 for nej, 1 for ja.", answer: 0, hint: "Samme x-værdi giver to forskellige y-værdier - ikke en funktion!" },
+                        { question: "f(x) = 2x + 3 og g(x) = 2x - 1. Hvad er f(5) - g(5)?", answer: 4, hint: "Beregn begge: f(5)=13, g(5)=9, så 13-9=4" },
+                        { question: "En linje parallel med y = 3x + 1 går gennem (0, 5). Hvad er hældningen?", answer: 3, hint: "Parallelle linjer har samme hældning" },
+                        { question: "To linjer: y = ax + 3 og y = 2x + b. De er parallelle. Hvad er a?", answer: 2, hint: "Parallelle linjer har samme hældning" },
+                        { question: "f(x) = mx + 5 er parallel med g(x) = -3x + 2. Hvad er m?", answer: -3, hint: "Parallelle linjer → samme hældning" }
+                    ],
+                    hard: [
+                        { question: "Linjer y = 2x + 3 og y = -x + b skærer hinanden ved x = 2. Hvad er b?", answer: 7, hint: "Ved x=2 giver første linje y=7. Sæt (2,7) i anden linje" },
+                        { question: "f(x) og g(x) er to linjer. f(3) = g(3) = 10 og f har hældning 2, g har hældning -1. Hvad er f(0)?", answer: 4, hint: "f(x) = 2x + b. Fra f(3)=10: 10=6+b, så b=4" },
+                        { question: "Definitionsmængde for f(x) = √(x - 5). Hvad er mindste x-værdi?", answer: 5, hint: "Udtrykket under roden skal være ≥ 0" },
+                        { question: "Værdimængde for f(x) = x² + 1 hvor x ∈ ℝ. Hvad er mindste y-værdi?", answer: 1, hint: "x² er aldrig negativ, minimum ved x=0" },
+                        { question: "For f(x) = |x - 3|, hvad er f(1) + f(5)?", answer: 4, hint: "|1-3| + |5-3| = 2 + 2" }
+                    ]
+                }
+            },
+            {
+                title: "Observatoriets Stjerner",
+                story: "Du kravler op på slottets tagudsigt. Her står et gammelt teleskop rettet mod himlen. På et stjernekort er noteret:\n\n\"Planeternes baner følger matematiske love. Data fra observationer afslører deres vej.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23000428' width='500' height='300'/%3E%3Ccircle fill='%23fff' cx='100' cy='50' r='2'/%3E%3Ccircle fill='%23fff' cx='450' cy='80' r='1.5'/%3E%3Ccircle fill='%23fff' cx='350' cy='40' r='2'/%3E%3Ccircle fill='%23fff' cx='200' cy='90' r='1'/%3E%3Ccircle fill='%23fff' cx='80' cy='120' r='1.5'/%3E%3Ccircle fill='%23ffeb3b' cx='400' cy='60' r='15'/%3E%3Cpath fill='%23333' d='M150 200 L200 180 L350 220 L320 240 Z'/%3E%3Ccircle fill='%23666' cx='180' cy='190' r='25'/%3E%3Crect fill='%23444' x='250' y='230' width='80' height='50'/%3E%3Ctext x='250' y='290' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E🔭 Observatoriet 🔭%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Data: (0, 10), (1, 13), (2, 16). Antag lineær model y = ax + b. Hvad er a?", answer: 3, hint: "y stiger med 3 hver gang x stiger med 1" },
+                        { question: "Model y = ax + 2 passer til data hvor y = 8 når x = 3. Hvad er a?", answer: 2, hint: "Sæt ind: 8 = a·3 + 2" },
+                        { question: "Temperaturen starter på 20 og stiger 5 grader i timen. Hvad er T efter 4 timer?", answer: 40, hint: "T(t) = 5t + 20, sæt t=4 ind" },
+                        { question: "En bil kører 60 km/t. Hvor langt når den på 3 timer?", answer: 180, hint: "Afstand = hastighed × tid" },
+                        { question: "Start: 100, stiger med 8 per time. Værdi efter 5 timer?", answer: 140, hint: "100 + 8·5" }
+                    ],
+                    medium: [
+                        { question: "En model: ved x = 0 er y = 5, ved x = 10 er y = 25. Hvad er y når x = 15?", answer: 35, hint: "Find a = (25-5)/10 = 2. Model: y = 2x + 5" },
+                        { question: "Data: (1, 7), (2, 10), (3, 13). Hvad er y når x = 5?", answer: 19, hint: "Mønster: y stiger med 3. Model y = 3x + 4" },
+                        { question: "Model y = 2x + b passer (3, 11). Find y når x = 7.", answer: 19, hint: "Find b: 11 = 6 + b, så b=5. Derefter y = 2·7 + 5" },
+                        { question: "Lineær vækst: start 50, efter 6 enheder er værdi 80. Hvad er vækstrate?", answer: 5, hint: "(80-50)/6 = 30/6" },
+                        { question: "y = ax + 10, punkt (4, 30). Hvad er y ved x = 8?", answer: 50, hint: "Find a: 30 = 4a + 10, så a=5" }
+                    ],
+                    hard: [
+                        { question: "Data: (2, 15), (5, 27). Find y når x = 8.", answer: 39, hint: "a = (27-15)/(5-2) = 4, b = 15-8 = 7. y = 4x + 7" },
+                        { question: "Absolut afvigelse mellem model og obs er 3, model = 45. Hvad er obs? (højeste værdi)", answer: 48, hint: "|obs - 45| = 3, så obs = 48 eller 42" },
+                        { question: "Model: y = 1.5x + 12. Ved hvilken x er y = 30?", answer: 12, hint: "Løs: 1.5x + 12 = 30" },
+                        { question: "Regression giver y = 3x + 2 med R² = 0.95. Hvad er y ved x = 10?", answer: 32, hint: "y = 3·10 + 2" },
+                        { question: "To punkter (1, 5) og (7, 29). Hvad er midtpunktets y-værdi?", answer: 17, hint: "Midtpunkt: ((1+7)/2, (5+29)/2)" }
+                    ]
+                }
+            },
+            {
+                title: "Kælderens Gåder",
+                story: "Ned ad stentrapper finder du slottets dybeste kælder. Gamle tønder står stablet. I lyset fra din fakkel ser du ridset i muren:\n\n\"Tællingen af fade følger et mønster. Find formlen for at åbne det næste kammer.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23120b0a' width='500' height='300'/%3E%3Cellipse fill='%234a3426' cx='150' cy='220' rx='40' ry='60'/%3E%3Cellipse fill='%234a3426' cx='250' cy='220' rx='40' ry='60'/%3E%3Cellipse fill='%234a3426' cx='350' cy='220' rx='40' ry='60'/%3E%3Cellipse fill='%235a4436' cx='150' cy='160' rx='40' ry='60'/%3E%3Cellipse fill='%235a4436' cx='250' cy='160' rx='40' ry='60'/%3E%3Cpath fill='%23ff6600' d='M50 50 Q60 40 70 50 L65 70 L55 70 Z'/%3E%3Ccircle fill='%23ff8800' cx='60' cy='45' r='15' opacity='0.6'/%3E%3Ctext x='250' y='290' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E🏺 Kælderen 🏺%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Løs: x² = 16 (positiv løsning)", answer: 4, hint: "Tag kvadratroden" },
+                        { question: "Løs: x² - 9 = 0 (positiv løsning)", answer: 3, hint: "x² = 9" },
+                        { question: "Løs: 2x² = 50 (positiv løsning)", answer: 5, hint: "Divider med 2 først" },
+                        { question: "Løs: x² = 25 (positiv løsning)", answer: 5, hint: "Kvadratrod af 25" },
+                        { question: "Løs: 3x² = 27 (positiv løsning)", answer: 3, hint: "x² = 9" }
+                    ],
+                    medium: [
+                        { question: "Løs x² - 5x + 6 = 0. Største løsning?", answer: 3, hint: "Faktorer: (x-2)(x-3) = 0" },
+                        { question: "Løs x² + 2x - 8 = 0. Positiv løsning?", answer: 2, hint: "Brug løsningsformlen eller faktorer" },
+                        { question: "Løs 2x² - 8x + 6 = 0. Største løsning?", answer: 3, hint: "Divider med 2: x² - 4x + 3 = 0" },
+                        { question: "x² - 7x + 12 = 0. Største løsning?", answer: 4, hint: "(x-3)(x-4) = 0" },
+                        { question: "x² + 3x - 10 = 0. Positiv løsning?", answer: 2, hint: "(x+5)(x-2) = 0" }
+                    ],
+                    hard: [
+                        { question: "Løs x² - 6x + 5 = 0. Sum af de to løsninger?", answer: 6, hint: "For ax²+bx+c=0 er sum = -b/a" },
+                        { question: "Løs 3x² - 12x + 9 = 0. Største løsning?", answer: 3, hint: "Divider med 3" },
+                        { question: "x² + bx + 9 = 0, en løsning er x = 3. Hvad er b?", answer: -6, hint: "Sæt x=3 ind: 9 + 3b + 9 = 0" },
+                        { question: "Diskriminant for x² - 4x + 3 = 0?", answer: 4, hint: "d = b² - 4ac = 16 - 12" },
+                        { question: "x² - 8x + 15 = 0. Produkt af løsningerne?", answer: 15, hint: "Produkt = c/a = 15" }
+                    ]
+                }
+            },
+                story: "Du træder ind i et cirkelrundt tårn. En spiraltrappe snor sig opad i mørket. På det første trin ligger en pergamentrrulle:\n\n\"Matematikeren gik op ad disse trin hver dag. Hans højde og antallet af trin har en lineær sammenhæng. Bestem hældningskoefficienten for at finde den næste ledtråd.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cellipse fill='%233d3d5c' cx='250' cy='250' rx='150' ry='50'/%3E%3Cpath fill='%234a4a6a' d='M100 250 Q250 180 400 250 Q250 200 100 250' /%3E%3Cpath fill='%235a5a7a' d='M120 230 Q250 160 380 230 Q250 180 120 230' /%3E%3Cpath fill='%236a6a8a' d='M140 210 Q250 140 360 210 Q250 160 140 210' /%3E%3Cpath fill='%237a7a9a' d='M160 190 Q250 120 340 190 Q250 140 160 190' /%3E%3Ctext x='250' y='50' font-family='serif' font-size='24' fill='%23d4af37' text-anchor='middle'%3E🗼 Spiraltrappen 🗼%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En lineær funktion går gennem punkterne (0, 2) og (1, 5). Hvad er hældningskoefficienten a?", answer: 3, hint: "Hældningen er ændringen i y divideret med ændringen i x: (5-2)/(1-0)" },
+                        { question: "Grafen for f(x) = ax + b går gennem (0, 1) og (2, 7). Bestem a.", answer: 3, hint: "Brug formlen a = (y₂ - y₁)/(x₂ - x₁)" },
+                        { question: "For funktionen f(x) = ax + 3, ved vi at f(2) = 9. Hvad er a?", answer: 3, hint: "Indsæt x=2 og f(2)=9 i ligningen og løs for a" }
+                    ],
+                    medium: [
+                        { question: "En linje går gennem punkterne (1, 3) og (4, 12). Hvad er hældningskoefficienten?", answer: 3, hint: "Brug to-punktsformlen: a = (y₂ - y₁)/(x₂ - x₁)" },
+                        { question: "For f(x) = ax + b ved vi: f(2) = 7 og f(5) = 13. Bestem a.", answer: 2, hint: "Brug to punkter (2,7) og (5,13) i to-punktsformlen" },
+                        { question: "Linjen gennem (-2, 1) og (3, 11) har hældning a. Bestem a.", answer: 2, hint: "a = (11-1)/(3-(-2))" }
+                    ],
+                    hard: [
+                        { question: "En lineær model er givet ved punkterne (3, 14) og (7, 26). Hvad er hældningen? (afrund til 1 decimal)", answer: 3, hint: "Hældning = (26-14)/(7-3)" },
+                        { question: "Hvis f(x) = ax + b, og vi kender f(1) = 5 og f(4) = 17, hvad er da 2a? (a ganget med 2)", answer: 8, hint: "Find først a med (17-5)/(4-1), gang derefter med 2" },
+                        { question: "En linje skærer y-aksen i 3 og har hældning 2. Hvad er x-værdien når y = 11?", answer: 4, hint: "Funktionen er f(x) = 2x + 3. Løs 2x + 3 = 11" }
+                    ]
+                }
+            },
+            {
+                title: "Den Hemmelige Have",
+                story: "Gennem en tung egetræsdør træder du ud i en moonbelyste have. Rosenbede danner geometriske mønstre. I havens midte står en fontæne med denne inskription:\n\n\"Matematikeren plantede sine roser i mønstre baseret på Pythagoras' visdom. Mål siderne i trekanten af rosenbede for at finde næste nøgle.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%230a2e0a' width='500' height='300'/%3E%3Cellipse fill='%23164016' cx='250' cy='260' rx='200' ry='40'/%3E%3Crect fill='%236b4423' x='230' y='100' width='40' height='160'/%3E%3Ccircle fill='%23ff6b9d' cx='210' cy='80' r='15'/%3E%3Ccircle fill='%23ff6b9d' cx='250' cy='70' r='18'/%3E%3Ccircle fill='%23ff6b9d' cx='290' cy='80' r='15'/%3E%3Cpath fill='%234a90e2' d='M200 250 L250 150 L300 250 Z' opacity='0.3'/%3E%3Ccircle fill='%234a90e2' cx='250' cy='250' r='30' opacity='0.5'/%3E%3Ctext x='250' y='40' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E🌹 Den Hemmelige Have 🌹%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En retvinklet trekant har kateter på 3 og 4. Hvad er hypotenusen? (Brug Pythagoras' sætning)", answer: 5, hint: "c² = a² + b², så c² = 3² + 4² = 9 + 16" },
+                        { question: "En trekant har kateter 6 og 8. Bestem hypotenusen.", answer: 10, hint: "c² = 6² + 8² = 36 + 64 = 100" },
+                        { question: "Hvis a = 5 og b = 12 i en retvinklet trekant, hvad er c?", answer: 13, hint: "c² = 25 + 144" }
+                    ],
+                    medium: [
+                        { question: "En retvinklet trekant har hypotenusen 10 og den ene katete er 6. Hvad er den anden katete?", answer: 8, hint: "a² + 6² = 10², så a² = 100 - 36" },
+                        { question: "En stige på 5 meter står 3 meter fra en væg. Hvor højt når stigen op?", answer: 4, hint: "Brug Pythagoras: h² + 3² = 5²" },
+                        { question: "I en retvinklet trekant er hypotenusen 13 og en katete er 5. Find den anden katete.", answer: 12, hint: "5² + b² = 13², så b² = 169 - 25" }
+                    ],
+                    hard: [
+                        { question: "En retvinklet trekant har areal 24 og den ene katete er 6. Hvad er hypotenusen?", answer: 10, hint: "Areal = (a·b)/2, så 24 = (6·b)/2. Find b først, derefter brug Pythagoras" },
+                        { question: "Diagonalen i et rektangel er 13, og den ene side er 5. Hvad er omkredsen af rektanglet?", answer: 34, hint: "Find den anden side med Pythagoras først (=12), omkreds = 2·(5+12)" },
+                        { question: "En kvadrat har diagonal 10. Hvad er siden? (afrund til hel tal)", answer: 7, hint: "I et kvadrat: d² = s² + s² = 2s²" }
+                    ]
+                }
+            },
+            {
+                title: "Tronsalen",
+                story: "Du træder ind i den majestætiske tronsal. Kongens trone står tom, men på væggen hænger et stort maleri. Under det står:\n\n\"Kongens skatkiste indeholder mønter efter en matematisk regel. Knæk koden.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23660000' width='500' height='300'/%3E%3Crect fill='%23990000' x='100' y='200' width='300' height='80' rx='5'/%3E%3Cpath fill='%23cc0000' d='M200 150 L250 100 L300 150 Z'/%3E%3Crect fill='%238b6914' x='220' y='150' width='60' height='50'/%3E%3Ccircle fill='%23d4af37' cx='250' cy='175' r='8'/%3E%3Cpath fill='%23d4af37' d='M150 50 L150 30 L180 30 L180 50 M320 50 L320 30 L350 30 L350 50' /%3E%3Ctext x='250' y='290' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E👑 Tronsalen 👑%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Et tal ganget med sig selv giver 36. Hvad er tallet? (positivt)", answer: 6, hint: "x·x = x² = 36" },
+                        { question: "Kvadratroden af 81?", answer: 9, hint: "Hvilket tal ganget med sig selv giver 81?" },
+                        { question: "√64 = ?", answer: 8, hint: "8·8 = 64" },
+                        { question: "√100 = ?", answer: 10, hint: "10·10 = 100" },
+                        { question: "Hvis x² = 49, hvad er x? (positiv)", answer: 7, hint: "Kvadratrod af 49" }
+                    ],
+                    medium: [
+                        { question: "Reducer: √(25·16) = ?", answer: 20, hint: "√25 · √16 = 5 · 4" },
+                        { question: "√(9 + 16) = ?", answer: 5, hint: "√25 = 5" },
+                        { question: "Hvis √x = 7, hvad er x?", answer: 49, hint: "Kvadrer begge sider" },
+                        { question: "√(4x) = 10, hvad er x?", answer: 25, hint: "4x = 100" },
+                        { question: "2√9 = ?", answer: 6, hint: "2·3 = 6" }
+                    ],
+                    hard: [
+                        { question: "√(x + 5) = 4. Hvad er x?", answer: 11, hint: "Kvadrer: x + 5 = 16" },
+                        { question: "Hvis √(2x - 1) = 5, hvad er x?", answer: 13, hint: "2x - 1 = 25" },
+                        { question: "Løs: x = √(x + 12). Hvad er den positive løsning?", answer: 4, hint: "Kvadrer begge sider: x² = x + 12" },
+                        { question: "√(3x + 4) = 5. Find x.", answer: 7, hint: "3x + 4 = 25" },
+                        { question: "Hvis a² + b² = 25 og a = 3, hvad er b? (positiv)", answer: 4, hint: "9 + b² = 25" }
+                    ]
+                }
+            },
+            {
+                title: "Musiksalen",
+                story: "En stor sal med et gammelt klaver. På væggene hænger noter. Du finder en besked:\n\n\"Harmonier følger matematiske forhold. Frekvenser og intervaller danner mønstre.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Crect fill='%23000' x='150' y='120' width='200' height='140'/%3E%3Crect fill='%23fff' x='160' y='130' width='25' height='100'/%3E%3Crect fill='%23fff' x='190' y='130' width='25' height='100'/%3E%3Crect fill='%23fff' x='220' y='130' width='25' height='100'/%3E%3Crect fill='%23fff' x='250' y='130' width='25' height='100'/%3E%3Crect fill='%23fff' x='280' y='130' width='25' height='100'/%3E%3Crect fill='%23fff' x='310' y='130' width='25' height='100'/%3E%3Crect fill='%23000' x='180' y='130' width='15' height='60'/%3E%3Crect fill='%23000' x='210' y='130' width='15' height='60'/%3E%3Crect fill='%23000' x='270' y='130' width='15' height='60'/%3E%3Ctext x='250' y='50' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E🎹 Musiksalen 🎹%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En funktion er voksende hvis a > 0 i f(x) = ax + b. Er f(x) = 3x + 2 voksende? (1=ja, 0=nej)", answer: 1, hint: "a = 3 > 0" },
+                        { question: "Er g(x) = -2x + 5 voksende? (1=ja, 0=nej)", answer: 0, hint: "a = -2 < 0, så den er aftagende" },
+                        { question: "Funktion f(x) = 5x - 1. Er den voksende? (1=ja, 0=nej)", answer: 1, hint: "a = 5 > 0" },
+                        { question: "Er h(x) = -x + 3 aftagende? (1=ja, 0=nej)", answer: 1, hint: "a = -1 < 0" },
+                        { question: "f(x) = 4x + 7. Er hældningen positiv? (1=ja, 0=nej)", answer: 1, hint: "a = 4 > 0" }
+                    ],
+                    medium: [
+                        { question: "For f(x) = ax + 5, hvis f(2) = 13, er funktionen voksende? (1=ja, 0=nej)", answer: 1, hint: "Find a: 13 = 2a + 5, så a = 4 > 0" },
+                        { question: "En funktion går gennem (1, 5) og (3, 11). Er den voksende? (1=ja, 0=nej)", answer: 1, hint: "a = (11-5)/(3-1) = 3 > 0" },
+                        { question: "Funktion gennem (2, 10) og (5, 1). Voksende? (1=ja, 0=nej)", answer: 0, hint: "a = (1-10)/(5-2) = -3 < 0" },
+                        { question: "f(x) = (x + 3) - 2x. Voksende? (1=ja, 0=nej)", answer: 0, hint: "Reducer: f(x) = -x + 3, a = -1" },
+                        { question: "To punkter: (0, 8) og (4, 0). Voksende? (1=ja, 0=nej)", answer: 0, hint: "a = (0-8)/(4-0) = -2" }
+                    ],
+                    hard: [
+                        { question: "f(x) voksende, g(x) aftagende. Er f(x) - g(x) voksende? (1=ja, 0=nej)", answer: 1, hint: "Hvis a_f > 0 og a_g < 0, så a_f - a_g > 0" },
+                        { question: "f(x) = 2x + 3 på interval [a, b]. Maksimum ved x = ?. Angiv 0 hvis x = a, 1 hvis x = b", answer: 1, hint: "Voksende funktion har maksimum i højre endepunkt" },
+                        { question: "g(x) = -3x + 10 på [0, 5]. Minimum ved x = ?. Angiv 0 eller 5", answer: 5, hint: "Aftagende funktion har minimum i højre endepunkt" },
+                        { question: "Funktion har definitionsmængde [2, 8] og værdimængde [5, 17]. Er den voksende? (1=ja, 0=nej)", answer: 1, hint: "Hvis den var aftagende, ville den største y-værdi være ved mindste x" },
+                        { question: "f og g begge voksende. Er f + g voksende? (1=ja, 0=nej)", answer: 1, hint: "Sum af to positive hældninger er positiv" }
+                    ]
+                }
+            },
+            {
+                title: "Riddersalen",
+                story: "Rustninger står langs væggene. Skjolde og sværd er ophængt. På et gammelt banner læser du:\n\n\"En ridder fordeler sit guld mellem sine mænd efter en regel. Matematikken sikrer retfærdighed.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%23333' width='500' height='300'/%3E%3Crect fill='%23555' x='100' y='200' width='300' height='80'/%3E%3Crect fill='%23777' x='150' y='100' width='80' height='120' rx='40'/%3E%3Crect fill='%23777' x='270' y='100' width='80' height='120' rx='40'/%3E%3Crect fill='%23999' x='170' y='80' width='40' height='30'/%3E%3Crect fill='%23999' x='290' y='80' width='40' height='30'/%3E%3Cpath fill='%23d4af37' d='M230 120 L270 120 L250 80 Z'/%3E%3Ccircle fill='%23c0c0c0' cx='250' cy='180' r='25'/%3E%3Ctext x='250' y='290' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E⚔️ Riddersalen ⚔️%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "5 riddere deler 45 guldmønter ligeligt. Hvor mange får hver?", answer: 9, hint: "45 ÷ 5" },
+                        { question: "En ridder har 3 gange så meget guld som sin knapt, der har 12 mønter. Hvor meget har ridderen?", answer: 36, hint: "3 · 12" },
+                        { question: "Fordel 60 mellem 4 personer ligeligt. Hvor meget hver?", answer: 15, hint: "60 ÷ 4" },
+                        { question: "Dobbelt så mange som 17?", answer: 34, hint: "2 · 17" },
+                        { question: "Halvdelen af 50?", answer: 25, hint: "50 ÷ 2" }
+                    ],
+                    medium: [
+                        { question: "Peter har x mønter. Marie har 3 mere end dobbelt så mange. Hun har 19. Hvad er x?", answer: 8, hint: "2x + 3 = 19" },
+                        { question: "Sammen har de 50. Den ene har 6 mere end den anden. Hvad har den med mindst?", answer: 22, hint: "x + (x+6) = 50" },
+                        { question: "3 gange et tal minus 7 er 20. Hvad er tallet?", answer: 9, hint: "3x - 7 = 20" },
+                        { question: "Et tal plus dets halvdel er 15. Hvad er tallet?", answer: 10, hint: "x + x/2 = 15" },
+                        { question: "Differensen mellem to tal er 8. Det større er 3 gange det mindre. Hvad er det mindre?", answer: 4, hint: "3x - x = 8" }
+                    ],
+                    hard: [
+                        { question: "Sum af to tal er 20, produkt er 75. Hvad er det største tal?", answer: 15, hint: "x + y = 20 og x·y = 75. Prøv tal: 5 og 15" },
+                        { question: "Tre på hinanden følgende tal har sum 24. Hvad er det mindste?", answer: 7, hint: "x + (x+1) + (x+2) = 24" },
+                        { question: "Forhold 2:3, sum 35. Hvad er det mindre tal?", answer: 14, hint: "2x + 3x = 35" },
+                        { question: "To tal: det ene er 5 mere end det andet. Deres produkt er 84. Mindste tal?", answer: 7, hint: "x(x+5) = 84. Prøv x = 7" },
+                        { question: "Gennemsnit af 5 tal er 12. Fire tal er 10, 11, 13, 14. Hvad er det femte?", answer: 12, hint: "Sum = 5·12 = 60" }
+                    ]
+                }
+            },
+            {
+                title: "Det Hemmelige Arkiv",
+                story: "Bag en bogreol finder du en skjult passage til et lille kammer. Gamle manuskripter ligger i støvet. På det øverste står:\n\n\"Her gemmes de matematiske sandheder. Kun den der forstår talenes relationer kan læse dem.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%232c1810' width='500' height='300'/%3E%3Crect fill='%234a3426' x='100' y='50' width='30' height='200'/%3E%3Crect fill='%234a3426' x='150' y='50' width='30' height='200'/%3E%3Crect fill='%234a3426' x='200' y='50' width='30' height='200'/%3E%3Crect fill='%234a3426' x='250' y='50' width='30' height='200'/%3E%3Crect fill='%234a3426' x='300' y='50' width='30' height='200'/%3E%3Crect fill='%234a3426' x='350' y='50' width='30' height='200'/%3E%3Cpath fill='%23d4af37' d='M50 100 L80 80 L80 120 Z' opacity='0.6'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E📜 Arkivet 📜%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Hvis 2x = 10, hvad er 3x?", answer: 15, hint: "Først find x = 5, derefter 3·5" },
+                        { question: "x + 5 = 12. Hvad er 2x?", answer: 14, hint: "x = 7, så 2·7 = 14" },
+                        { question: "Hvis x/2 = 6, hvad er x?", answer: 12, hint: "Gang med 2 på begge sider" },
+                        { question: "3x = 18. Hvad er x + 4?", answer: 10, hint: "x = 6, så 6 + 4" },
+                        { question: "Hvis x - 3 = 7, hvad er x?", answer: 10, hint: "Læg 3 til begge sider" }
+                    ],
+                    medium: [
+                        { question: "Hvis f(x) = 2x + 1 og f(a) = 11, hvad er a?", answer: 5, hint: "2a + 1 = 11" },
+                        { question: "g(x) = x² og g(b) = 16. Hvad er b? (positiv)", answer: 4, hint: "b² = 16" },
+                        { question: "h(x) = 3x - 5 og h(c) = h(4). Hvad er c hvis c ≠ 4?", answer: 4, hint: "For lineær funktion er der kun én løsning" },
+                        { question: "Hvis 2f(x) = 10, og f(x) = x + 1, hvad er x?", answer: 4, hint: "f(x) = 5, så x + 1 = 5" },
+                        { question: "p(x) = ax og p(3) = 15. Hvad er p(5)?", answer: 25, hint: "Find a = 5, så p(5) = 5·5" }
+                    ],
+                    hard: [
+                        { question: "f(x) = x² - 4 og f(a) = 0. Hvad er a? (positiv)", answer: 2, hint: "a² - 4 = 0" },
+                        { question: "g(x) = |x - 5| og g(b) = 3. Hvad er b? (mindste værdi)", answer: 2, hint: "|b - 5| = 3 giver b = 2 eller b = 8" },
+                        { question: "h(x) = √(x + 7) og h(c) = 4. Hvad er c?", answer: 9, hint: "√(c + 7) = 4, så c + 7 = 16" },
+                        { question: "f(x) = 2^x og f(a) = 8. Hvad er a?", answer: 3, hint: "2^a = 8 = 2³" },
+                        { question: "Hvis f(x+2) = 3x + 5, hvad er f(4)?", answer: 11, hint: "Sæt x+2 = 4, så x = 2. f(4) = 3·2 + 5" }
+                    ]
+                }
+            },
+            {
+                title: "Broen Over Volden",
+                story: "Du står ved en gammel vindebro. For at sænke den skal du løse det problem, der er skrevet på portens sten:\n\n\"Broens længde og vinkler er bestemt af matematiske love. Beregn dimensionerne.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%234a90e2' width='500' height='300'/%3E%3Crect fill='%23228b22' x='0' y='200' width='500' height='100'/%3E%3Crect fill='%236b4423' x='150' y='150' width='200' height='20'/%3E%3Cpath fill='%23555' d='M80 200 L120 200 L120 100 L80 100 Z'/%3E%3Cpath fill='%23555' d='M380 200 L420 200 L420 100 L380 100 Z'/%3E%3Cpath fill='%23888' d='M150 160 L160 150 L340 150 L350 160 Z'/%3E%3Cpath fill='%234a90e2' d='M0 200 Q250 220 500 200' opacity='0.5'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E🌉 Broen 🌉%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "En bro er tre gange så lang som den er bred. Bredden er 5m. Længden?", answer: 15, hint: "3 · 5" },
+                        { question: "Omkreds af rektangel: 2(l + b). Hvis l = 8 og b = 3, hvad er omkredsen?", answer: 22, hint: "2(8 + 3)" },
+                        { question: "Areal af rektangel = længde × bredde. Hvis 12 × 5?", answer: 60, hint: "12 · 5" },
+                        { question: "Kvadrat med side 7. Hvad er arealet?", answer: 49, hint: "7²" },
+                        { question: "Omkreds af kvadrat med side 9?", answer: 36, hint: "4 · 9" }
+                    ],
+                    medium: [
+                        { question: "Rektangel areal 48, længde 8. Hvad er bredden?", answer: 6, hint: "8 · b = 48" },
+                        { question: "Kvadrat areal 64. Hvad er siden?", answer: 8, hint: "s² = 64" },
+                        { question: "Omkreds 30, bredde 5 (rektangel). Hvad er længden?", answer: 10, hint: "2(l + 5) = 30" },
+                        { question: "Trekant: grundlinje 10, højde 6. Areal?", answer: 30, hint: "Areal = (g·h)/2 = (10·6)/2" },
+                        { question: "Cirkel radius 5. Diameter?", answer: 10, hint: "d = 2r" }
+                    ],
+                    hard: [
+                        { question: "Rektangel: længde er 3 mere end bredde, areal 40. Hvad er bredden?", answer: 5, hint: "b(b+3) = 40. Prøv b = 5" },
+                        { question: "Kvadrat omkreds 32. Hvad er arealet?", answer: 64, hint: "Side = 32/4 = 8, så areal = 64" },
+                        { question: "Retvinklet trekant: kateter 6 og 8. Hvad er arealet?", answer: 24, hint: "Areal = (6·8)/2" },
+                        { question: "Trapez: parallelle sider 5 og 9, højde 4. Areal?", answer: 28, hint: "A = ((a+b)·h)/2 = ((5+9)·4)/2" },
+                        { question: "Rektangel: diagonal 13, bredde 5. Hvad er arealet?", answer: 60, hint: "Find længde med Pythagoras: 12. Areal = 5·12" }
+                    ]
+                }
+            },
+            {
+                title: "Tidsur-kammeret",
+                story: "I et rundt kammer hænger et enormt ur. Dets visere bevæger sig uregelmæssigt. Ved foden af uret står:\n\n\"Tid og matematiske progressioner er forbundet. Forstå mønstret i urets bevægelser.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Ccircle fill='%23d4af37' cx='250' cy='150' r='80' stroke='%23000' stroke-width='8' fill='%23f0e6d2'/%3E%3Ccircle fill='%23d4af37' cx='250' cy='150' r='5'/%3E%3Cline x1='250' y1='150' x2='250' y2='100' stroke='%23000' stroke-width='4'/%3E%3Cline x1='250' y1='150' x2='290' y2='150' stroke='%23000' stroke-width='3'/%3E%3Ctext x='250' y='100' font-family='serif' font-size='20' fill='%23000' text-anchor='middle'%3E12%3C/text%3E%3Ctext x='310' y='155' font-family='serif' font-size='20' fill='%23000'%3E3%3C/text%3E%3Ctext x='250' y='215' font-family='serif' font-size='20' fill='%23000' text-anchor='middle'%3E6%3C/text%3E%3Ctext x='185' y='155' font-family='serif' font-size='20' fill='%23000'%3E9%3C/text%3E%3Ctext x='250' y='270' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E🕰️ Tidsuret 🕰️%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Talrække: 2, 4, 6, 8, ... Hvad er det næste tal?", answer: 10, hint: "Stiger med 2 hver gang" },
+                        { question: "Rækken: 5, 10, 15, 20, ... Næste?", answer: 25, hint: "Stiger med 5" },
+                        { question: "1, 3, 5, 7, ... Næste?", answer: 9, hint: "Ulige tal" },
+                        { question: "10, 20, 30, 40, ... Næste?", answer: 50, hint: "Stiger med 10" },
+                        { question: "3, 6, 9, 12, ... Hvad er det 6. tal i rækken?", answer: 18, hint: "Multipla af 3" }
+                    ],
+                    medium: [
+                        { question: "Rækken: 1, 4, 7, 10, ... Hvad er det 5. led?", answer: 13, hint: "Stiger med 3. a_n = 3n - 2" },
+                        { question: "2, 5, 8, 11, ... Hvad er det 10. led?", answer: 29, hint: "a_n = 3n - 1" },
+                        { question: "100, 95, 90, 85, ... Hvad er det 6. led?", answer: 75, hint: "Aftager med 5" },
+                        { question: "Talrække: a_n = 2n + 3. Hvad er a_5?", answer: 13, hint: "2·5 + 3" },
+                        { question: "3, 7, 11, 15, ... Ved hvilken n er a_n = 39?", answer: 10, hint: "a_n = 4n - 1, løs 4n - 1 = 39" }
+                    ],
+                    hard: [
+                        { question: "Fibonacci-lignende: 1, 1, 2, 3, 5, 8, ... Næste?", answer: 13, hint: "Hvert tal er summen af de to forrige" },
+                        { question: "Geometrisk: 2, 6, 18, 54, ... Næste?", answer: 162, hint: "Ganges med 3" },
+                        { question: "1, 4, 9, 16, 25, ... Næste?", answer: 36, hint: "Kvadrattal: n²" },
+                        { question: "Sum af første 5 positive hele tal?", answer: 15, hint: "1+2+3+4+5" },
+                        { question: "Aritmetisk række: første led 3, differens 4. Hvad er 7. led?", answer: 27, hint: "a_n = a_1 + (n-1)d = 3 + 6·4" }
+                    ]
+                }
+            },
+            {
+                title: "Den Fortryllede Labyrint",
+                story: "Du træder ind i en ganglabyrint. Vægge af levende hæk rækker op mod himlen. Ved indgangen står ridset:\n\n\"Kun den der kan beregne afstande og vinkler finder ud af labyrinten. Matematik er din guide.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%232d5016' width='500' height='300'/%3E%3Crect fill='%23228b22' x='50' y='50' width='400' height='30'/%3E%3Crect fill='%23228b22' x='50' y='50' width='30' height='200'/%3E%3Crect fill='%23228b22' x='420' y='50' width='30' height='200'/%3E%3Crect fill='%23228b22' x='50' y='220' width='400' height='30'/%3E%3Crect fill='%23228b22' x='150' y='100' width='30' height='80'/%3E%3Crect fill='%23228b22' x='320' y='140' width='30' height='80'/%3E%3Crect fill='%23228b22' x='200' y='150' width='100' height='30'/%3E%3Ccircle fill='%23ff6b6b' cx='250' cy='135' r='8'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E🌿 Labyrinten 🌿%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Afstand mellem (0, 0) og (3, 0)?", answer: 3, hint: "På samme linje, bare tæl" },
+                        { question: "Afstand mellem (2, 5) og (2, 9)?", answer: 4, hint: "Samme x, forskel i y: |9-5|" },
+                        { question: "Punkt (5, 3). Hvad er x-koordinaten?", answer: 5, hint: "Første tal i parentesen" },
+                        { question: "Midtpunkt mellem 0 og 10 på tallinje?", answer: 5, hint: "(0+10)/2" },
+                        { question: "Punkt flyttet 3 til højre fra (2, 5). Ny x-koordinat?", answer: 5, hint: "2 + 3" }
+                    ],
+                    medium: [
+                        { question: "Afstand mellem (0, 0) og (3, 4)? (brug Pythagoras)", answer: 5, hint: "√(3² + 4²) = √25" },
+                        { question: "Distance mellem (1, 2) og (4, 6)?", answer: 5, hint: "√((4-1)² + (6-2)²) = √(9+16)" },
+                        { question: "Midtpunkt mellem (2, 3) og (8, 7). Hvad er x-koordinaten?", answer: 5, hint: "(2+8)/2" },
+                        { question: "Afstand (0, 0) til (5, 12)?", answer: 13, hint: "√(25 + 144)" },
+                        { question: "Punkt (a, 3) har afstand 5 fra (0, 0). Hvad er a? (positiv)", answer: 4, hint: "√(a² + 9) = 5" }
+                    ],
+                    hard: [
+                        { question: "Tre punkter: A(0, 0), B(6, 0), C(3, h). Hvis ABC er ligebenet med AC = BC, hvad er h hvis h > 0?", answer: 3, hint: "C skal være lige langt fra A og B. Ved symmetri er h = 3√3 ≈ 5.2, men prøv h hvor AC² = BC²" },
+                        { question: "Cirkel centrum (0, 0), radius 5. Ligger punkt (3, 4) på cirklen? (1=ja, 0=nej)", answer: 1, hint: "Afstand fra centrum: √(9+16) = 5" },
+                        { question: "Linje gennem (1, 2) og (3, 6). Hældning?", answer: 2, hint: "(6-2)/(3-1) = 4/2" },
+                        { question: "Punkt på linje y = 2x + 1. Hvis x = 3, hvad er y?", answer: 7, hint: "y = 2·3 + 1" },
+                        { question: "Afstand fra (2, 3) til linje y = 0?", answer: 3, hint: "Afstand til x-aksen er y-koordinaten" }
+                    ]
+                }
+            },
+            {
+                title: "Skattekabinettet",
+                story: "Den sidste dør åbner sig til et hemmeligt kammer. I midten står et piedestal med den forsvundne bog! Men den er låst med en final mekanisme:\n\n\"Den som ønsker denne visdom må vise beherskelse af alle talenes kunster. Løs den finale opgave, og bogen er din.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cpath fill='%23d4af37' d='M200 200 L300 200 L280 280 L220 280 Z'/%3E%3Crect fill='%238b4513' x='210' y='150' width='80' height='50' rx='5'/%3E%3Cpath fill='%23ffd700' d='M220 170 L230 160 L270 160 L280 170' opacity='0.6'/%3E%3Ccircle fill='%23ff6b6b' cx='250' cy='175' r='8'/%3E%3Cpath fill='%23d4af37' d='M100 50 L150 30 L350 30 L400 50 L380 80 L120 80 Z' opacity='0.3'/%3E%3Crect fill='%23666' x='150' y='60' width='200' height='15'/%3E%3Crect fill='%23888' x='180' y='75' width='140' height='10'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E📖 Den Forsvundne Bog 📖%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Beregn: 15% af 60", answer: 9, hint: "0.15 · 60" },
+                        { question: "Hvad er 50% af 80?", answer: 40, hint: "Halvdelen af 80" },
+                        { question: "20% af 100?", answer: 20, hint: "En femtedel" },
+                        { question: "10% af 250?", answer: 25, hint: "250/10" },
+                        { question: "25% af 40?", answer: 10, hint: "En fjerdedel" }
+                    ],
+                    medium: [
+                        { question: "Pris før: 200. Efter 10% rabat?", answer: 180, hint: "200 - 10% af 200 = 200 - 20" },
+                        { question: "Stigning fra 50 til 60. Hvor mange procent?", answer: 20, hint: "(60-50)/50 · 100% = 20%" },
+                        { question: "30% af et tal er 15. Hvad er tallet?", answer: 50, hint: "0.3 · x = 15" },
+                        { question: "Vare koster 120 inkl. 20% moms. Pris uden moms?", answer: 100, hint: "120/1.2" },
+                        { question: "Vækst 5% om året. Start 1000. Efter 1 år?", answer: 1050, hint: "1000 · 1.05" }
+                    ],
+                    hard: [
+                        { question: "Rente 4% årligt. Start 500. Efter 2 år? (afrund til heltal)", answer: 541, hint: "500 · 1.04²" },
+                        { question: "Fald 10%, derefter stigning 10%. Start 100. Slutresultat?", answer: 99, hint: "100 · 0.9 · 1.1" },
+                        { question: "Ratio 3:5, sum 40. Mindste del?", answer: 15, hint: "3x + 5x = 40" },
+                        { question: "Sammensatte rente: 1000 kr, 5% årligt, 2 år. Slut? (afrund)", answer: 1102, hint: "1000 · 1.05²" },
+                        { question: "Pris sænkes 20%, derefter 25%. Samlet reduktion i %? (afrund)", answer: 40, hint: "0.8 · 0.75 = 0.6, så 40% reduktion" }
+                    ]
+                }
+            }
+        ];
+                story: "Du finder en skjult dør bag en bogreol. Bag den ligger et støvet laboratorium fyldt med reagensglas og mystiske instrumenter. På bordet ligger åbne noter:\n\n\"Mine eksperimenter viser en lineær sammenhæng mellem tid og temperatur. Brug regression for at forudsige det kritiske punkt.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Crect fill='%233d2817' x='100' y='180' width='300' height='20'/%3E%3Crect fill='%236b4423' x='220' y='50' width='60' height='130'/%3E%3Cpath fill='%2366cccc' d='M220 150 Q250 130 280 150 L280 180 L220 180 Z'/%3E%3Cellipse fill='%2366cccc' cx='250' cy='150' rx='30' ry='10'/%3E%3Crect fill='%236b4423' x='150' y='120' width='40' height='60'/%3E%3Crect fill='%236b4423' x='310' y='100' width='40' height='80'/%3E%3Ccircle fill='%23ff6b6b' cx='170' cy='140' r='8'/%3E%3Ccircle fill='%2366ff66' cx='330' cy='130' r='8'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E⚗️ Laboratoriet ⚗️%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Data: (0, 10), (1, 13), (2, 16). Antag lineær model y = ax + b. Hvad er a? (hældningen)", answer: 3, hint: "Se på ændringen: fra 10 til 13 til 16 - det stiger med 3 hver gang" },
+                        { question: "En model y = ax + 2 passer til data hvor y = 8 når x = 3. Hvad er a?", answer: 2, hint: "Indsæt: 8 = a·3 + 2, løs for a" },
+                        { question: "Hvis temperaturen starter på 20 og stiger 5 grader i timen, hvad er temperaturen efter 4 timer?", answer: 40, hint: "Brug T(t) = 5t + 20, indsæt t = 4" }
+                    ],
+                    medium: [
+                        { question: "En lineær model er fundet til data. Ved x = 0 er y = 5, ved x = 10 er y = 25. Hvad er y når x = 15?", answer: 35, hint: "Find først a = (25-5)/(10-0) = 2. Så y = 2x + 5. Beregn y når x = 15" },
+                        { question: "Eksperiment: (1, 7), (2, 10), (3, 13). Fortsæt mønstret: hvad er y når x = 5?", answer: 19, hint: "y stiger med 3 for hver x. Mønster: y = 3x + 4" },
+                        { question: "En model y = 2x + b passer data (3, 11). Brug modellen til at finde y når x = 7.", answer: 19, hint: "Find først b ved at indsætte (3,11): 11 = 2·3 + b" }
+                    ],
+                    hard: [
+                        { question: "Data: (2, 15), (5, 27). Find y når x = 8. (brug lineær interpolation)", answer: 39, hint: "Find a = (27-15)/(5-2) = 4. Så b = 15 - 4·2 = 7. Model: y = 4x + 7" },
+                        { question: "Hvis den absolutte afvigelse mellem model og observation er 3, og modelværdien er 45, hvad var observationen? (giv den højeste mulighed)", answer: 48, hint: "Absolut afvigelse = |obs - model| = 3, så obs = 45 + 3 eller 45 - 3" },
+                        { question: "Model: y = 1.5x + 12. Ved hvilken x-værdi er y = 30? (afrund til hel tal)", answer: 12, hint: "Løs ligningen: 1.5x + 12 = 30" }
+                    ]
+                }
+            },
+            {
+                title: "Skattekabinettet",
+                story: "Den sidste dør åbner sig til et hemmeligt kammer. I midten står et piedestal med den forsvundne bog! Men den er låst med en final mekanisme:\n\n\"Den som ønsker denne visdom må vise beherskelse af alle talenes kunster. Løs den finale andengradsligning, og bogen er din.\"",
+                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cpath fill='%23d4af37' d='M200 200 L300 200 L280 280 L220 280 Z'/%3E%3Crect fill='%238b4513' x='210' y='150' width='80' height='50' rx='5'/%3E%3Cpath fill='%23ffd700' d='M220 170 L230 160 L270 160 L280 170' opacity='0.6'/%3E%3Ccircle fill='%23ff6b6b' cx='250' cy='175' r='8'/%3E%3Cpath fill='%23d4af37' d='M100 50 L150 30 L350 30 L400 50 L380 80 L120 80 Z' opacity='0.3'/%3E%3Crect fill='%23666' x='150' y='60' width='200' height='15'/%3E%3Crect fill='%23888' x='180' y='75' width='140' height='10'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E📖 Den Forsvundne Bog 📖%3C/text%3E%3C/svg%3E",
+                problems: {
+                    easy: [
+                        { question: "Løs andengradsligningen: x² = 16 (angiv den positive løsning)", answer: 4, hint: "Tag kvadratroden på begge sider" },
+                        { question: "Løs: x² - 9 = 0 (angiv den positive løsning)", answer: 3, hint: "Flyt -9 til højre side, så tag kvadratrod" },
+                        { question: "Løs: 2x² = 50 (angiv den positive løsning)", answer: 5, hint: "Divider først med 2, derefter kvadratrod" }
+                    ],
+                    medium: [
+                        { question: "Løs x² - 5x + 6 = 0. Angiv den største løsning.", answer: 3, hint: "Faktorer: (x - 2)(x - 3) = 0, eller brug formlen med a=1, b=-5, c=6" },
+                        { question: "Løs x² + 2x - 8 = 0. Angiv den positive løsning.", answer: 2, hint: "Brug løsningsformlen: x = (-b ± √(b²-4ac))/(2a)" },
+                        { question: "Løs 2x² - 8x + 6 = 0. Angiv den største løsning.", answer: 3, hint: "Divider evt. først med 2: x² - 4x + 3 = 0" }
+                    ],
+                    hard: [
+                        { question: "Løs x² - 6x + 5 = 0. Hvad er summen af de to løsninger?", answer: 6, hint: "For ax² + bx + c = 0 er summen af rødderne = -b/a. Eller find begge løsninger og læg sammen" },
+                        { question: "Løs 3x² - 12x + 9 = 0. Angiv den største løsning.", answer: 3, hint: "Divider med 3 først: x² - 4x + 3 = 0" },
+                        { question: "For ligningen x² + bx + 9 = 0, hvis en løsning er x = 3, hvad er b?", answer: -6, hint: "Indsæt x=3: 9 + 3b + 9 = 0, løs for b" }
+                    ]
+                }
+            }
+        ];
+
+        function showStartScreen() {
+            const content = `
+                <div class="start-screen">
+                    <h2>Velkommen, Ædel Vandrer!</h2>
+                    <p>År 1425. I de dybe skove omkring Gladsaxe Slot gemmer sig en legende...</p>
+                    <p>Den berømte matematiker Fibonacci den Anden forsvandt sporløst for 20 år siden, men hans magiske bog med al verdens matematiske visdom siges at være skjult et sted i slottet.</p>
+                    <p>Kun dem med et skarpt sind og en kjæk vilje kan løse de matematiske gåder, der vogter hver dør på vejen til skatten.</p>
+                    <p><strong>Vil du påtage dig denne quest?</strong></p>
+                    <button onclick="showDifficultySelection()" style="font-size: 1.3em; padding: 20px 50px;">⚔️ Begynd Eventyret ⚔️</button>
+                </div>
+            `;
+            document.getElementById('gameContent').innerHTML = content;
+            playSound('door');
+        }
+
+        function showDifficultySelection() {
+            const content = `
+                <div class="difficulty-screen">
+                    <h2>Vælg Din Udfordring</h2>
+                    <p>Vælg hvor svære matematiske prøvelser du ønsker at gennemgå:</p>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn" onclick="startGame('easy')" style="background: linear-gradient(135deg, #4caf50 0%, #66ff66 100%);">
+                            🛡️ LET<br>
+                            <small style="font-size: 0.8em;">For lærlinge</small>
+                        </button>
+                        <button class="difficulty-btn" onclick="startGame('medium')" style="background: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);">
+                            ⚔️ MIDDEL<br>
+                            <small style="font-size: 0.8em;">For kæmpere</small>
+                        </button>
+                        <button class="difficulty-btn" onclick="startGame('hard')" style="background: linear-gradient(135deg, #f44336 0%, #ff6b6b 100%);">
+                            🔥 SVÆR<br>
+                            <small style="font-size: 0.8em;">For mestre</small>
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('gameContent').innerHTML = content;
+            playSound('hint');
+        }
+
+        function startGame(difficulty) {
+            gameState.difficulty = difficulty;
+            gameState.currentRoom = 0;
+            gameState.hintsUsed = 0;
+            gameState.score = 1000;
+            gameState.startTime = Date.now();
+            gameState.usedProblems = []; // Reset used problems for new game
+            
+            document.getElementById('stats').classList.remove('hidden');
+            document.getElementById('progressBar').classList.remove('hidden');
+            
+            updateStats();
+            loadRoom();
+            playSound('door');
+        }
+
+        function loadRoom() {
+            gameState.roomStartTime = Date.now();
+            const room = rooms[gameState.currentRoom];
+            const problems = room.problems[gameState.difficulty];
+            
+            // Create a unique key for this room and difficulty
+            const roomKey = `${gameState.currentRoom}-${gameState.difficulty}`;
+            
+            // Get available problems that haven't been used yet
+            const availableIndices = [];
+            for (let i = 0; i < problems.length; i++) {
+                const problemKey = `${roomKey}-${i}`;
+                if (!gameState.usedProblems.includes(problemKey)) {
+                    availableIndices.push(i);
+                }
+            }
+            
+            // If all problems have been used for this room, reset for this room only
+            let problemIndex;
+            if (availableIndices.length === 0) {
+                // Remove only the used problems for this specific room
+                gameState.usedProblems = gameState.usedProblems.filter(key => !key.startsWith(roomKey + '-'));
+                problemIndex = Math.floor(Math.random() * problems.length);
+            } else {
+                // Select from available problems
+                problemIndex = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+            }
+            
+            // Mark this problem as used
+            gameState.usedProblems.push(`${roomKey}-${problemIndex}`);
+            
+            const problem = problems[problemIndex];
+            
+            const content = `
+                <div class="room-content">
+                    <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px;">${room.title}</h2>
+                    <img src="${room.image}" alt="${room.title}" class="room-image">
+                    <div class="story-text">${room.story}</div>
+                    <div class="math-problem">
+                        <h3>📜 Matematisk Opgave:</h3>
+                        <p style="font-size: 1.1em; margin: 15px 0;">${problem.question}</p>
+                        <div class="input-group">
+                            <input type="number" id="answer" placeholder="Indtast dit svar..." step="0.1">
+                        </div>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
+                            <button onclick="checkAnswer(${problem.answer})">🗝️ Tjek Svar</button>
+                            <button class="hint-button" onclick="showHint('${problem.hint.replace(/'/g, "\\'")}')">💡 Brug Hint (-${gameState.hintPenalty} point)</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = content;
+            document.getElementById('answer').focus();
+            
+            // Allow enter key to submit
+            document.getElementById('answer').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkAnswer(problem.answer);
+                }
+            });
+        }
+
+        function showHint(hint) {
+            playSound('hint');
+            gameState.hintsUsed++;
+            gameState.score -= gameState.hintPenalty;
+            updateStats();
+            
+            showFeedback(`🧙 En vis gammel munk hvisker: "${hint}"`, 'hint');
+        }
+
+        function checkAnswer(correctAnswer) {
+            const userAnswer = parseFloat(document.getElementById('answer').value);
+            
+            if (isNaN(userAnswer)) {
+                showFeedback('⚠️ Du må indtaste et tal, kære ridder!', 'error');
+                playSound('error');
+                return;
+            }
+            
+            // Allow small floating point errors
+            if (Math.abs(userAnswer - correctAnswer) < 0.1) {
+                playSound('success');
+                
+                // Calculate time bonus
+                const timeSpent = (Date.now() - gameState.roomStartTime) / 1000;
+                const timeBonus = Math.max(0, 50 - Math.floor(timeSpent / 10));
+                gameState.score += 100 + timeBonus;
+                
+                const messages = [
+                    "⚔️ Udmærket! Du har vist din matematiske tapperhed!",
+                    "🏆 Rigtigt! Tallenes magi bøjer sig for dit intellekt!",
+                    "✨ Korrekt! Din visdom er stor!",
+                    "🎯 Præcist! Du er en sand matematisk helt!",
+                    "🌟 Fremragende! Fibonacci ville være stolt!"
+                ];
+                const message = messages[Math.floor(Math.random() * messages.length)];
+                showFeedback(message, 'success');
+                
+                // Create particles
+                createParticles(window.innerWidth / 2, window.innerHeight / 2);
+                
+                gameState.currentRoom++;
+                updateStats();
+                
+                setTimeout(() => {
+                    if (gameState.currentRoom < gameState.totalRooms) {
+                        showDoorOpening();
+                    } else {
+                        showVictory();
+                    }
+                }, 2000);
+            } else {
+                playSound('error');
+                gameState.score -= 5;
+                updateStats();
+                
+                const messages = [
+                    "❌ Det var ikke det rigtige tal. Prøv igen, modige sjæl!",
+                    "🔮 Nej, tallenes mysterium er stadig skjult. Forsøg på ny!",
+                    "⚡ Ikke helt korrekt. Koncentrer dig og prøv igen!",
+                    "🌙 Det svar åbner ikke døren. Tænk grundigere!",
+                    "📚 Forkert svar. Måske skulle du bruge et hint?"
+                ];
+                const message = messages[Math.floor(Math.random() * messages.length)];
+                showFeedback(message, 'error');
+            }
+        }
+
+        function showDoorOpening() {
+            playSound('door');
+            const content = `
+                <div class="door-opening" style="padding: 100px 20px;">
+                    🔓 Porten åbnes…
+                    <p style="font-size: 0.4em; margin-top: 30px; animation: slideIn 1s ease;">Trin ekkoer i det mørke gang...</p>
+                </div>
+            `;
+            document.getElementById('gameContent').innerHTML = content;
+            
+            setTimeout(() => {
+                loadRoom();
+            }, 2500);
+        }
+
+        function showVictory() {
+            playSound('success');
+            playSound('door');
+            
+            const totalTime = Math.floor((Date.now() - gameState.startTime) / 1000);
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            
+            let difficultyText = '';
+            switch(gameState.difficulty) {
+                case 'easy': difficultyText = 'LET 🛡️'; break;
+                case 'medium': difficultyText = 'MIDDEL ⚔️'; break;
+                case 'hard': difficultyText = 'SVÆR 🔥'; break;
+            }
+            
+            const content = `
+                <div class="victory-screen">
+                    <h2 style="font-size: 3em; animation: glow 2s ease-in-out infinite;">🏆 SEJR! 🏆</h2>
+                    <div style="margin: 30px 0;">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cpath fill='%23d4af37' d='M250 50 L270 100 L320 100 L280 130 L295 180 L250 150 L205 180 L220 130 L180 100 L230 100 Z'/%3E%3Crect fill='%238b4513' x='220' y='180' width='60' height='100' rx='5'/%3E%3Cellipse fill='%23d4af37' cx='250' cy='180' rx='40' ry='15'/%3E%3Ctext x='250' y='260' font-family='serif' font-size='24' fill='%23ffd700' text-anchor='middle'%3E📖 Bogen er fundet! 📖%3C/text%3E%3C/svg%3E" 
+                         alt="Victory" class="room-image" style="max-width: 400px;">
+                    </div>
+                    <p style="font-size: 1.3em; margin: 20px 0; line-height: 1.6;">
+                        Med stor tapperhed og skarpsindighed har du gennemført alle prøvelserne!<br>
+                        <strong>Den Forsvundne Matematikers Bog er nu din!</strong><br>
+                        Dens hemmeligheder vil hjælpe dig med matematikken i mange år fremover.
+                    </p>
+                    
+                    <div class="victory-stats">
+                        <h3 style="color: #d4af37; text-align: center; margin-bottom: 20px;">📊 Din Bedrift:</h3>
+                        <div class="victory-stat">
+                            <span>Sværhedsgrad:</span>
+                            <strong style="color: #d4af37;">${difficultyText}</strong>
+                        </div>
+                        <div class="victory-stat">
+                            <span>Rum Gennemført:</span>
+                            <strong style="color: #d4af37;">${gameState.totalRooms}</strong>
+                        </div>
+                        <div class="victory-stat">
+                            <span>Hints Brugt:</span>
+                            <strong style="color: #d4af37;">${gameState.hintsUsed}</strong>
+                        </div>
+                        <div class="victory-stat">
+                            <span>Total Tid:</span>
+                            <strong style="color: #d4af37;">${minutes}m ${seconds}s</strong>
+                        </div>
+                        <div class="victory-stat">
+                            <span>Slutscore:</span>
+                            <strong style="color: #ffd700; font-size: 1.5em;">${gameState.score}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <button onclick="showStartScreen()" style="font-size: 1.2em; padding: 15px 40px;">
+                            🔄 Prøv Igen
+                        </button>
+                        <button onclick="changeExportMessage()" style="font-size: 1.2em; padding: 15px 40px; background: linear-gradient(135deg, #4a90e2 0%, #5ca3ff 100%); color: white;">
+                            📤 Del Dit Resultat
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('gameContent').innerHTML = content;
+            createParticles(window.innerWidth / 2, 100);
+        }
+
+        function changeExportMessage() {
+            alert(`🏆 Fantastisk præstation!\n\nDit resultat:\n- Sværhedsgrad: ${gameState.difficulty.toUpperCase()}\n- Score: ${gameState.score}\n- Hints brugt: ${gameState.hintsUsed}\n\nDel dit screenshot med dine venner! 📸`);
+        }
+
+        // Initialize game on load
+        window.onload = function() {
+            showStartScreen();
+        };
+    </script>
+</body>
+</html>
