@@ -384,7 +384,7 @@
         <div class="stats hidden" id="stats">
             <div class="stat-item">
                 <div class="stat-label">Rum Gennemført</div>
-                <div class="stat-value" id="roomsCompleted">0/5</div>
+                <div class="stat-value" id="roomsCompleted">0/15</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label">Hints Brugt</div>
@@ -418,7 +418,8 @@
             startTime: null,
             roomStartTime: null,
             hintPenalty: 10,
-            usedProblems: []
+            usedProblems: [],
+            currentHint: ''
         };
 
         // Sound effects using Web Audio API
@@ -433,37 +434,132 @@
             
             switch(type) {
                 case 'success':
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1);
-                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2);
-                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+                    // Triumphant church bell sound - major chord progression
+                    oscillator.type = 'sine';
+                    const oscillator2 = audioContext.createOscillator();
+                    const oscillator3 = audioContext.createOscillator();
+                    const gainNode2 = audioContext.createGain();
+                    const gainNode3 = audioContext.createGain();
+                    
+                    oscillator2.connect(gainNode2);
+                    oscillator3.connect(gainNode3);
+                    gainNode2.connect(audioContext.destination);
+                    gainNode3.connect(audioContext.destination);
+                    
+                    oscillator2.type = 'sine';
+                    oscillator3.type = 'sine';
+                    
+                    // Bell-like harmonics (C major chord)
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C
+                    oscillator2.frequency.setValueAtTime(659.25, audioContext.currentTime); // E
+                    oscillator3.frequency.setValueAtTime(783.99, audioContext.currentTime); // G
+                    
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gainNode2.gain.setValueAtTime(0.12, audioContext.currentTime);
+                    gainNode3.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    gainNode3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    
                     oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.5);
+                    oscillator2.start(audioContext.currentTime);
+                    oscillator3.start(audioContext.currentTime);
+                    
+                    oscillator.stop(audioContext.currentTime + 1.5);
+                    oscillator2.stop(audioContext.currentTime + 1.5);
+                    oscillator3.stop(audioContext.currentTime + 1.5);
                     break;
+                    
                 case 'error':
-                    oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-                    oscillator.frequency.setValueAtTime(150, audioContext.currentTime + 0.1);
+                    // Dark, ominous wizard/troll sound - descending minor tones
+                    oscillator.type = 'triangle';
+                    const errorOsc2 = audioContext.createOscillator();
+                    const errorGain2 = audioContext.createGain();
+                    
+                    errorOsc2.connect(errorGain2);
+                    errorGain2.connect(audioContext.destination);
+                    errorOsc2.type = 'sawtooth';
+                    
+                    // Descending ominous tones
+                    oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // Low A
+                    oscillator.frequency.setValueAtTime(196, audioContext.currentTime + 0.15); // G
+                    oscillator.frequency.setValueAtTime(174.61, audioContext.currentTime + 0.3); // F
+                    
+                    errorOsc2.frequency.setValueAtTime(110, audioContext.currentTime); // Lower octave
+                    errorOsc2.frequency.setValueAtTime(98, audioContext.currentTime + 0.15);
+                    errorOsc2.frequency.setValueAtTime(87.31, audioContext.currentTime + 0.3);
+                    
                     gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                    errorGain2.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+                    errorGain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.6);
+                    
                     oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.3);
+                    errorOsc2.start(audioContext.currentTime);
+                    
+                    oscillator.stop(audioContext.currentTime + 0.6);
+                    errorOsc2.stop(audioContext.currentTime + 0.6);
                     break;
+                    
                 case 'door':
+                    // Heavy wooden door creaking open
                     oscillator.type = 'sawtooth';
+                    const doorNoise = audioContext.createOscillator();
+                    const doorNoiseGain = audioContext.createGain();
+                    
+                    doorNoise.connect(doorNoiseGain);
+                    doorNoiseGain.connect(audioContext.destination);
+                    doorNoise.type = 'sawtooth';
+                    
                     oscillator.frequency.setValueAtTime(100, audioContext.currentTime);
                     oscillator.frequency.exponentialRampToValueAtTime(50, audioContext.currentTime + 1);
+                    
+                    doorNoise.frequency.setValueAtTime(150, audioContext.currentTime);
+                    doorNoise.frequency.exponentialRampToValueAtTime(75, audioContext.currentTime + 1);
+                    
                     gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                    doorNoiseGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    
                     gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                    doorNoiseGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                    
                     oscillator.start(audioContext.currentTime);
+                    doorNoise.start(audioContext.currentTime);
+                    
                     oscillator.stop(audioContext.currentTime + 1);
+                    doorNoise.stop(audioContext.currentTime + 1);
                     break;
+                    
                 case 'hint':
-                    oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-                    gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    // Mystical wizard whisper - soft magical chime
+                    oscillator.type = 'sine';
+                    const hintOsc2 = audioContext.createOscillator();
+                    const hintGain2 = audioContext.createGain();
+                    
+                    hintOsc2.connect(hintGain2);
+                    hintGain2.connect(audioContext.destination);
+                    hintOsc2.type = 'sine';
+                    
+                    // Magical sparkle sound
+                    oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+                    oscillator.frequency.setValueAtTime(1174.66, audioContext.currentTime + 0.1);
+                    
+                    hintOsc2.frequency.setValueAtTime(1318.51, audioContext.currentTime + 0.05);
+                    hintOsc2.frequency.setValueAtTime(1760, audioContext.currentTime + 0.15);
+                    
+                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    hintGain2.gain.setValueAtTime(0.12, audioContext.currentTime);
+                    
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    hintGain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                    
                     oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + 0.2);
+                    hintOsc2.start(audioContext.currentTime);
+                    
+                    oscillator.stop(audioContext.currentTime + 0.4);
+                    hintOsc2.stop(audioContext.currentTime + 0.4);
                     break;
             }
         }
@@ -732,7 +828,9 @@
                     ]
                 }
             },
-                story: "Du træder ind i et cirkelrundt tårn. En spiraltrappe snor sig opad i mørket. På det første trin ligger en pergamentrrulle:\n\n\"Matematikeren gik op ad disse trin hver dag. Hans højde og antallet af trin har en lineær sammenhæng. Bestem hældningskoefficienten for at finde den næste ledtråd.\"",
+            {
+                title: "Spiraltrappens Mysterium",
+                story: "Du træder ind i et cirkelrundt tårn. En spiraltrappe snor sig opad i mørket. På det første trin ligger en pergamentrulle:\n\n\"Matematikeren gik op ad disse trin hver dag. Hans højde og antallet af trin har en lineær sammenhæng. Bestem hældningskoefficienten for at finde den næste ledtråd.\"",
                 image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cellipse fill='%233d3d5c' cx='250' cy='250' rx='150' ry='50'/%3E%3Cpath fill='%234a4a6a' d='M100 250 Q250 180 400 250 Q250 200 100 250' /%3E%3Cpath fill='%235a5a7a' d='M120 230 Q250 160 380 230 Q250 180 120 230' /%3E%3Cpath fill='%236a6a8a' d='M140 210 Q250 140 360 210 Q250 160 140 210' /%3E%3Cpath fill='%237a7a9a' d='M160 190 Q250 120 340 190 Q250 140 160 190' /%3E%3Ctext x='250' y='50' font-family='serif' font-size='24' fill='%23d4af37' text-anchor='middle'%3E🗼 Spiraltrappen 🗼%3C/text%3E%3C/svg%3E",
                 problems: {
                     easy: [
@@ -999,49 +1097,6 @@
                 }
             }
         ];
-                story: "Du finder en skjult dør bag en bogreol. Bag den ligger et støvet laboratorium fyldt med reagensglas og mystiske instrumenter. På bordet ligger åbne noter:\n\n\"Mine eksperimenter viser en lineær sammenhæng mellem tid og temperatur. Brug regression for at forudsige det kritiske punkt.\"",
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Crect fill='%233d2817' x='100' y='180' width='300' height='20'/%3E%3Crect fill='%236b4423' x='220' y='50' width='60' height='130'/%3E%3Cpath fill='%2366cccc' d='M220 150 Q250 130 280 150 L280 180 L220 180 Z'/%3E%3Cellipse fill='%2366cccc' cx='250' cy='150' rx='30' ry='10'/%3E%3Crect fill='%236b4423' x='150' y='120' width='40' height='60'/%3E%3Crect fill='%236b4423' x='310' y='100' width='40' height='80'/%3E%3Ccircle fill='%23ff6b6b' cx='170' cy='140' r='8'/%3E%3Ccircle fill='%2366ff66' cx='330' cy='130' r='8'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='20' fill='%23d4af37' text-anchor='middle'%3E⚗️ Laboratoriet ⚗️%3C/text%3E%3C/svg%3E",
-                problems: {
-                    easy: [
-                        { question: "Data: (0, 10), (1, 13), (2, 16). Antag lineær model y = ax + b. Hvad er a? (hældningen)", answer: 3, hint: "Se på ændringen: fra 10 til 13 til 16 - det stiger med 3 hver gang" },
-                        { question: "En model y = ax + 2 passer til data hvor y = 8 når x = 3. Hvad er a?", answer: 2, hint: "Indsæt: 8 = a·3 + 2, løs for a" },
-                        { question: "Hvis temperaturen starter på 20 og stiger 5 grader i timen, hvad er temperaturen efter 4 timer?", answer: 40, hint: "Brug T(t) = 5t + 20, indsæt t = 4" }
-                    ],
-                    medium: [
-                        { question: "En lineær model er fundet til data. Ved x = 0 er y = 5, ved x = 10 er y = 25. Hvad er y når x = 15?", answer: 35, hint: "Find først a = (25-5)/(10-0) = 2. Så y = 2x + 5. Beregn y når x = 15" },
-                        { question: "Eksperiment: (1, 7), (2, 10), (3, 13). Fortsæt mønstret: hvad er y når x = 5?", answer: 19, hint: "y stiger med 3 for hver x. Mønster: y = 3x + 4" },
-                        { question: "En model y = 2x + b passer data (3, 11). Brug modellen til at finde y når x = 7.", answer: 19, hint: "Find først b ved at indsætte (3,11): 11 = 2·3 + b" }
-                    ],
-                    hard: [
-                        { question: "Data: (2, 15), (5, 27). Find y når x = 8. (brug lineær interpolation)", answer: 39, hint: "Find a = (27-15)/(5-2) = 4. Så b = 15 - 4·2 = 7. Model: y = 4x + 7" },
-                        { question: "Hvis den absolutte afvigelse mellem model og observation er 3, og modelværdien er 45, hvad var observationen? (giv den højeste mulighed)", answer: 48, hint: "Absolut afvigelse = |obs - model| = 3, så obs = 45 + 3 eller 45 - 3" },
-                        { question: "Model: y = 1.5x + 12. Ved hvilken x-værdi er y = 30? (afrund til hel tal)", answer: 12, hint: "Løs ligningen: 1.5x + 12 = 30" }
-                    ]
-                }
-            },
-            {
-                title: "Skattekabinettet",
-                story: "Den sidste dør åbner sig til et hemmeligt kammer. I midten står et piedestal med den forsvundne bog! Men den er låst med en final mekanisme:\n\n\"Den som ønsker denne visdom må vise beherskelse af alle talenes kunster. Løs den finale andengradsligning, og bogen er din.\"",
-                image: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 300'%3E%3Crect fill='%231a1a2e' width='500' height='300'/%3E%3Cpath fill='%23d4af37' d='M200 200 L300 200 L280 280 L220 280 Z'/%3E%3Crect fill='%238b4513' x='210' y='150' width='80' height='50' rx='5'/%3E%3Cpath fill='%23ffd700' d='M220 170 L230 160 L270 160 L280 170' opacity='0.6'/%3E%3Ccircle fill='%23ff6b6b' cx='250' cy='175' r='8'/%3E%3Cpath fill='%23d4af37' d='M100 50 L150 30 L350 30 L400 50 L380 80 L120 80 Z' opacity='0.3'/%3E%3Crect fill='%23666' x='150' y='60' width='200' height='15'/%3E%3Crect fill='%23888' x='180' y='75' width='140' height='10'/%3E%3Ctext x='250' y='280' font-family='serif' font-size='18' fill='%23d4af37' text-anchor='middle'%3E📖 Den Forsvundne Bog 📖%3C/text%3E%3C/svg%3E",
-                problems: {
-                    easy: [
-                        { question: "Løs andengradsligningen: x² = 16 (angiv den positive løsning)", answer: 4, hint: "Tag kvadratroden på begge sider" },
-                        { question: "Løs: x² - 9 = 0 (angiv den positive løsning)", answer: 3, hint: "Flyt -9 til højre side, så tag kvadratrod" },
-                        { question: "Løs: 2x² = 50 (angiv den positive løsning)", answer: 5, hint: "Divider først med 2, derefter kvadratrod" }
-                    ],
-                    medium: [
-                        { question: "Løs x² - 5x + 6 = 0. Angiv den største løsning.", answer: 3, hint: "Faktorer: (x - 2)(x - 3) = 0, eller brug formlen med a=1, b=-5, c=6" },
-                        { question: "Løs x² + 2x - 8 = 0. Angiv den positive løsning.", answer: 2, hint: "Brug løsningsformlen: x = (-b ± √(b²-4ac))/(2a)" },
-                        { question: "Løs 2x² - 8x + 6 = 0. Angiv den største løsning.", answer: 3, hint: "Divider evt. først med 2: x² - 4x + 3 = 0" }
-                    ],
-                    hard: [
-                        { question: "Løs x² - 6x + 5 = 0. Hvad er summen af de to løsninger?", answer: 6, hint: "For ax² + bx + c = 0 er summen af rødderne = -b/a. Eller find begge løsninger og læg sammen" },
-                        { question: "Løs 3x² - 12x + 9 = 0. Angiv den største løsning.", answer: 3, hint: "Divider med 3 først: x² - 4x + 3 = 0" },
-                        { question: "For ligningen x² + bx + 9 = 0, hvis en løsning er x = 3, hvad er b?", answer: -6, hint: "Indsæt x=3: 9 + 3b + 9 = 0, løs for b" }
-                    ]
-                }
-            }
-        ];
 
         function showStartScreen() {
             const content = `
@@ -1080,7 +1135,7 @@
                 </div>
             `;
             document.getElementById('gameContent').innerHTML = content;
-            playSound('hint');
+            playSound('success');
         }
 
         function startGame(difficulty) {
@@ -1132,6 +1187,10 @@
             
             const problem = problems[problemIndex];
             
+            // Store current hint globally so it can be accessed by showHint()
+            gameState.currentHint = problem.hint;
+            console.log('loadRoom: Set currentHint to:', gameState.currentHint);
+            
             const content = `
                 <div class="room-content">
                     <h2 style="color: #d4af37; text-align: center; margin-bottom: 20px;">${room.title}</h2>
@@ -1145,7 +1204,7 @@
                         </div>
                         <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
                             <button onclick="checkAnswer(${problem.answer})">🗝️ Tjek Svar</button>
-                            <button class="hint-button" onclick="showHint('${problem.hint.replace(/'/g, "\\'")}')">💡 Brug Hint (-${gameState.hintPenalty} point)</button>
+                            <button class="hint-button" id="hintButton">💡 Brug Hint (-${gameState.hintPenalty} point)</button>
                         </div>
                     </div>
                 </div>
@@ -1153,6 +1212,11 @@
             
             document.getElementById('gameContent').innerHTML = content;
             document.getElementById('answer').focus();
+            
+            // Add hint button event listener
+            document.getElementById('hintButton').addEventListener('click', function() {
+                showHint();
+            });
             
             // Allow enter key to submit
             document.getElementById('answer').addEventListener('keypress', function(e) {
@@ -1162,14 +1226,18 @@
             });
         }
 
-        function showHint(hint) {
+        function showHint() {
+            console.log('showHint called, currentHint:', gameState.currentHint);
             playSound('hint');
             gameState.hintsUsed++;
             gameState.score -= gameState.hintPenalty;
             updateStats();
             
-            showFeedback(`🧙 En vis gammel munk hvisker: "${hint}"`, 'hint');
+            showFeedback(`🧙 En vis gammel munk hvisker: "${gameState.currentHint}"`, 'hint');
         }
+        
+        // Make sure showHint is available globally
+        window.showHint = showHint;
 
         function checkAnswer(correctAnswer) {
             const userAnswer = parseFloat(document.getElementById('answer').value);
