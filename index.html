@@ -434,41 +434,67 @@
             
             switch(type) {
                 case 'success':
-                    // Triumphant church bell sound - major chord progression
-                    oscillator.type = 'sine';
-                    const oscillator2 = audioContext.createOscillator();
-                    const oscillator3 = audioContext.createOscillator();
-                    const gainNode2 = audioContext.createGain();
-                    const gainNode3 = audioContext.createGain();
+                    // Authentic medieval church bell with overtones and resonance
+                    oscillator.type = 'triangle'; // Warmer, more bell-like than sine
+                    const osc2 = audioContext.createOscillator();
+                    const osc3 = audioContext.createOscillator();
+                    const osc4 = audioContext.createOscillator();
+                    const osc5 = audioContext.createOscillator();
                     
-                    oscillator2.connect(gainNode2);
-                    oscillator3.connect(gainNode3);
-                    gainNode2.connect(audioContext.destination);
-                    gainNode3.connect(audioContext.destination);
+                    const gain2 = audioContext.createGain();
+                    const gain3 = audioContext.createGain();
+                    const gain4 = audioContext.createGain();
+                    const gain5 = audioContext.createGain();
                     
-                    oscillator2.type = 'sine';
-                    oscillator3.type = 'sine';
+                    oscillator.connect(gainNode);
+                    osc2.connect(gain2);
+                    osc3.connect(gain3);
+                    osc4.connect(gain4);
+                    osc5.connect(gain5);
                     
-                    // Bell-like harmonics (C major chord)
-                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C
-                    oscillator2.frequency.setValueAtTime(659.25, audioContext.currentTime); // E
-                    oscillator3.frequency.setValueAtTime(783.99, audioContext.currentTime); // G
+                    gain2.connect(audioContext.destination);
+                    gain3.connect(audioContext.destination);
+                    gain4.connect(audioContext.destination);
+                    gain5.connect(audioContext.destination);
                     
-                    gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
-                    gainNode2.gain.setValueAtTime(0.12, audioContext.currentTime);
-                    gainNode3.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    osc2.type = 'triangle';
+                    osc3.type = 'sine';
+                    osc4.type = 'sine';
+                    osc5.type = 'sine';
                     
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
-                    gainNode2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
-                    gainNode3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    // Medieval bell - fundamental with authentic overtones
+                    const fundamental = 261.63; // C4
+                    oscillator.frequency.setValueAtTime(fundamental, audioContext.currentTime); // Fundamental
+                    osc2.frequency.setValueAtTime(fundamental * 2, audioContext.currentTime); // Octave
+                    osc3.frequency.setValueAtTime(fundamental * 3, audioContext.currentTime); // Fifth overtone
+                    osc4.frequency.setValueAtTime(fundamental * 4, audioContext.currentTime); // Second octave
+                    osc5.frequency.setValueAtTime(fundamental * 5, audioContext.currentTime); // Third overtone
+                    
+                    // Bell-like amplitude envelope - strong attack, slow decay
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gain2.gain.setValueAtTime(0.15, audioContext.currentTime);
+                    gain3.gain.setValueAtTime(0.08, audioContext.currentTime);
+                    gain4.gain.setValueAtTime(0.04, audioContext.currentTime);
+                    gain5.gain.setValueAtTime(0.02, audioContext.currentTime);
+                    
+                    // Long resonant decay like a real bell
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.5);
+                    gain2.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.5);
+                    gain3.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2.0);
+                    gain4.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.5);
+                    gain5.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1.0);
                     
                     oscillator.start(audioContext.currentTime);
-                    oscillator2.start(audioContext.currentTime);
-                    oscillator3.start(audioContext.currentTime);
+                    osc2.start(audioContext.currentTime);
+                    osc3.start(audioContext.currentTime);
+                    osc4.start(audioContext.currentTime);
+                    osc5.start(audioContext.currentTime);
                     
-                    oscillator.stop(audioContext.currentTime + 1.5);
-                    oscillator2.stop(audioContext.currentTime + 1.5);
-                    oscillator3.stop(audioContext.currentTime + 1.5);
+                    oscillator.stop(audioContext.currentTime + 2.5);
+                    osc2.stop(audioContext.currentTime + 2.5);
+                    osc3.stop(audioContext.currentTime + 2.0);
+                    osc4.stop(audioContext.currentTime + 1.5);
+                    osc5.stop(audioContext.currentTime + 1.0);
                     break;
                     
                 case 'error':
@@ -596,10 +622,27 @@
             feedback.className = `feedback ${type}`;
             feedback.textContent = message;
             
-            const gameContent = document.getElementById('gameContent');
-            gameContent.insertBefore(feedback, gameContent.firstChild);
-            
-            setTimeout(() => feedback.remove(), 5000);
+            // For hints, place in the dedicated hint container
+            if (type === 'hint') {
+                const hintContainer = document.getElementById('hintContainer');
+                if (hintContainer) {
+                    // Clear any existing hints first
+                    hintContainer.innerHTML = '';
+                    // Add the new hint
+                    hintContainer.appendChild(feedback);
+                } else {
+                    // Fallback if container not found
+                    const gameContent = document.getElementById('gameContent');
+                    gameContent.appendChild(feedback);
+                }
+                // Show hints 3x longer (15 seconds)
+                setTimeout(() => feedback.remove(), 15000);
+            } else {
+                const gameContent = document.getElementById('gameContent');
+                gameContent.insertBefore(feedback, gameContent.firstChild);
+                // Normal feedback: 5 seconds
+                setTimeout(() => feedback.remove(), 5000);
+            }
         }
 
         // Room definitions with multiple variations - 15 rooms total
@@ -1206,6 +1249,7 @@
                             <button onclick="checkAnswer(${problem.answer})">🗝️ Tjek Svar</button>
                             <button class="hint-button" id="hintButton">💡 Brug Hint (-${gameState.hintPenalty} point)</button>
                         </div>
+                        <div id="hintContainer" style="margin-top: 20px;"></div>
                     </div>
                 </div>
             `;
